@@ -4,22 +4,30 @@ import { Label } from "@/components/login/label";
 import { Input } from "@/components/login/input";
 import { cn } from "@/lib/utils";
 import { IconBrandGoogle } from "@tabler/icons-react";
-import { auth, googleProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "./firebase";
+import {
+  auth,
+  googleProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "./firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { firestore } from "./firebase"; // Ensure to import Firestore instance
 
 export default function AuthForm() {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [name, setName] = useState<string>(''); // Only used for signup
-  const [phoneNumber, setPhoneNumber] = useState<string | ''>(''); // Optional, only used for signup
-  const [isSignup, setIsSignup] = useState(false); 
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [name, setName] = useState<string>(""); // Only used for signup
+  const [phoneNumber, setPhoneNumber] = useState<string | "">(""); // Optional, only used for signup
+  const [isSignup, setIsSignup] = useState(false);
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("User signed in: ", userCredential.user);
+      window.location.href = "/"; // Redirect to home
     } catch (error) {
       console.error("Error signing in: ", error);
     }
@@ -30,17 +38,18 @@ export default function AuthForm() {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      
+
       // Update the user's displayName
       await updateProfile(user, { displayName: name });
 
       // Save additional user info to Firestore
-      await setDoc(doc(firestore, 'users', user.uid), {
+      await setDoc(doc(firestore, "users", user.uid), {
         name: name.trim(),
         phoneNumber: phoneNumber.trim(),
       });
 
       console.log("User signed up and data saved: ", user);
+      window.location.href = "/"; // Redirect to home
     } catch (error) {
       console.error("Error signing up or saving user info: ", error);
     }
@@ -50,6 +59,7 @@ export default function AuthForm() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       console.log("User signed in with Google: ", result.user);
+      window.location.href = "/"; // Redirect to home
     } catch (error) {
       console.error("Error signing in with Google: ", error);
     }
@@ -58,14 +68,14 @@ export default function AuthForm() {
   const toggleForm = () => {
     setIsSignup(!isSignup);
   };
-
+  
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         {isSignup ? "Create an Account" : "Welcome to Aceternity"}
       </h2>
       <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-        {isSignup ? "Sign up to join Aceternity" : "Login to Aceternity if you can because we don;t have a login flow yet"}
+        {isSignup ? "Sign up to join Aceternity" : "Login to Aceternity"}
       </p>
 
       <form className="my-8" onSubmit={isSignup ? handleSignupSubmit : handleLoginSubmit}>
