@@ -16,11 +16,11 @@ import {
 import { doc, setDoc } from "firebase/firestore";
 import { firestore } from "./firebase"; // Ensure to import Firestore instance
 
-export default function AuthForm() {
+export default function AuthForm(userNum: number) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [name, setName] = useState<string>(""); // Only used for signup
-  const [phoneNumber, setPhoneNumber] = useState<string | "">(""); // Optional, only used for signup
+  const [name, setName] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string | "">("");
   const [isSignup, setIsSignup] = useState(false);
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -47,7 +47,7 @@ export default function AuthForm() {
       const user = userCredential.user;
 
       // Update the user's displayName
-      await updateProfile(user, { displayName: name });
+      await updateProfile(user, { displayName: name});
 
       // Save additional user info to Firestore
       await setDoc(doc(firestore, "users", user.uid), {
@@ -61,6 +61,8 @@ export default function AuthForm() {
       console.error("Error signing up or saving user info: ", error);
       setAlertMessage(error.message);
       setShowAlert(true);
+
+      const userNum = phoneNumber
     }
   };
 
