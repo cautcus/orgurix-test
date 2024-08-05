@@ -234,8 +234,6 @@ export default function AuthForm() {
           Send Reset Email
           <BottomGradient />
         </button>
-
-
             </form>
             <button
               className="mt-4 text-sm text-blue-500 hover:underline"
