@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Label } from "@/components/login/label";
 import { Input } from "@/components/login/input";
 import { cn } from "@/lib/utils";
+import { Alert } from "flowbite-react";
 import { IconBrandGoogle } from "@tabler/icons-react";
 import {
   auth,
@@ -21,6 +22,8 @@ export default function AuthForm() {
   const [name, setName] = useState<string>(""); // Only used for signup
   const [phoneNumber, setPhoneNumber] = useState<string | "">(""); // Optional, only used for signup
   const [isSignup, setIsSignup] = useState(false);
+  const [alertMessage, setAlertMessage] = useState<string>("");
+  const [showAlert, setShowAlert] = useState<boolean>(false);
 
   const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,8 +31,10 @@ export default function AuthForm() {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("User signed in: ", userCredential.user);
       window.location.href = "/"; // Redirect to home
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error signing in: ", error);
+      setAlertMessage(error.message);
+      setShowAlert(true);
     }
   };
 
@@ -50,8 +55,10 @@ export default function AuthForm() {
 
       console.log("User signed up and data saved: ", user);
       window.location.href = "/"; // Redirect to home
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error signing up or saving user info: ", error);
+      setAlertMessage(error.message);
+      setShowAlert(true);
     }
   };
 
@@ -60,17 +67,30 @@ export default function AuthForm() {
       const result = await signInWithPopup(auth, googleProvider);
       console.log("User signed in with Google: ", result.user);
       window.location.href = "/"; // Redirect to home
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error signing in with Google: ", error);
+      setAlertMessage(error.message);
+      setShowAlert(true);
     }
   };
 
   const toggleForm = () => {
     setIsSignup(!isSignup);
   };
-  
+
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
+      {showAlert && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <span className="block sm:inline">{alertMessage}</span>
+          <span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setShowAlert(false)}>
+            <svg className="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <title>Close</title>
+              <path d="M14.348 5.652a.5.5 0 0 0-.707 0L10 9.293 6.36 5.652a.5.5 0 1 0-.707.707L9.293 10l-3.64 3.641a.5.5 0 0 0 .707.707L10 10.707l3.641 3.641a.5.5 0 0 0 .707-.707L10.707 10l3.641-3.641a.5.5 0 0 0 0-.707z"/>
+            </svg>
+          </span>
+        </div>
+      )}
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         {isSignup ? "Create an Account" : "Welcome to Aceternity"}
       </h2>
@@ -178,14 +198,11 @@ const BottomGradient = () => {
 
 const LabelInputContainer = ({
   children,
-  className,
 }: {
   children: React.ReactNode;
   className?: string;
-}) => {
-  return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
-    </div>
-  );
-};
+}) => (
+  <div className={cn("mb-4")}>
+    {children}
+  </div>
+);
