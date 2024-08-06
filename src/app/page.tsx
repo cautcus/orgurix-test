@@ -7,7 +7,6 @@ import { Feature } from "@/components/h-grid/feature";
 import { CardA } from "@/components/cards/3dcard";
 import { Reviews } from "@/components/review/review";
 import { Team } from "@/components/member/team";
-import Navbar from "./nnv";
 
 
 export default function Home() {

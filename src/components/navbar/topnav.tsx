@@ -85,7 +85,7 @@ function Navbar({ className }: { className?: string }) {
             <button className="text-neutral-200 hover:text-neutral-400 pointer" onClick={handleLogout}>Logout</button></div>
             </MenuItem>
             </div>
-            <HoveredLink href="/auth">Cart</HoveredLink>
+            <HoveredLink href="/cart">Cart</HoveredLink>
             </>
           ) : (
             <HoveredLink href="/auth">Login</HoveredLink>

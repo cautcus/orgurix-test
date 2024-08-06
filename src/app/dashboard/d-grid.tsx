@@ -19,6 +19,7 @@ import {
 } from "@/app/auth/firebase";
 import MyAccount from "./my-account";
 import SupportHelp from "./supportHelp";
+import Wishlist from "./wishlist";
 
 export function DGrid() {
   const [alertMessage, setAlertMessage] = useState<string>("");
@@ -28,6 +29,7 @@ export function DGrid() {
   const [user, setUser] = useState<any>(null);
   const [showMyAccount, setShowMyAccount] = useState<boolean>(false);
   const [showSupportHelp, setShowSupportHelp] = useState<boolean>(false);
+  const [showWishlist, setShowWishlist] = useState<boolean>(false);
 
   const handlePasswordReset = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -94,11 +96,13 @@ export function DGrid() {
             icon={<IconKey className="h-4 w-4 text-cyan-500" />}
           />
         </a>
+        <a className="md:col-span-2" href="/wishlist">
         <BentoGridItem
           title="Wishlist"
           description="Save your favorite items and keep track of products you wish to purchase in the future."
           icon={<IconList className="h-4 w-4 text-purple-500" />}
         />
+        </a>
         <BentoGridItem
           className="md:col-span-2"
           title="Your Order"
@@ -154,6 +158,7 @@ export function DGrid() {
 
       {showSupportHelp && <SupportHelp onClose={() => setShowSupportHelp(false)} />}
       {showMyAccount && <MyAccount onClose={() => setShowMyAccount(false)} />}
+      {showWishlist && <Wishlist onClose={() => setShowWishlist(false)} />}
     </>
   );
 }

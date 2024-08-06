@@ -1,20 +1,31 @@
 // components/account/my-account.tsx
 import React, { useState, useEffect } from "react";
-import { auth } from "@/app/auth/firebase";
+import { auth,db } from "@/app/auth/firebase";
 import { Label } from "@/components/login/label";
 import { Input } from "@/components/login/input";
 import { cn } from "@/lib/utils";
+import { doc, getDoc } from "firebase/firestore";
 
 
 const MyAccount = ({ onClose }: { onClose: () => void }) => {
   const [user, setUser] = useState<any>(null);
   const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setUser(user);
         setEmail(user.email || "");
+
+        // Fetch user data from Firestore
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setName(userData.name);
+          setPhoneNumber(userData.phoneNumber);
+        }
       } else {
         setUser(null);
       }
@@ -42,7 +53,7 @@ const MyAccount = ({ onClose }: { onClose: () => void }) => {
           </div>
           <div className="mb-4">
             <Label>Phone Number</Label>
-            <Input className="cursor-pointer" type="text" value={user.phone_number || ""} readOnly />
+            <Input className="cursor-pointer" type="text" value={phoneNumber} readOnly />
           </div>
         </div>
       ) : (
