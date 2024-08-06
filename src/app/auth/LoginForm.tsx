@@ -16,7 +16,7 @@ import {
 import { doc, setDoc } from "firebase/firestore";
 import { firestore } from "./firebase"; // Ensure to import Firestore instance
 
-export default function AuthForm(userNum: number) {
+export default function AuthForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
