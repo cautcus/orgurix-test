@@ -96,13 +96,11 @@ export function DGrid() {
             icon={<IconKey className="h-4 w-4 text-cyan-500" />}
           />
         </a>
-        <a className="md:col-span-2" href="/wishlist">
         <BentoGridItem
           title="Wishlist"
           description="Save your favorite items and keep track of products you wish to purchase in the future."
           icon={<IconList className="h-4 w-4 text-purple-500" />}
         />
-        </a>
         <BentoGridItem
           className="md:col-span-2"
           title="Your Order"
