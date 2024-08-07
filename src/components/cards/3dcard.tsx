@@ -18,6 +18,7 @@ export function CardA() {
       price: 590.00,
       originalPrice: 990.00,
       goto: "https://algochurn.com",
+      quantity:1
     },
     {
       id: "product-id-2",
@@ -26,6 +27,7 @@ export function CardA() {
       price: 490.00,
       originalPrice: 890.00,
       goto: "https://algochurn.com",
+       quantity:1
     },
     {
       id: "product-id-3",
@@ -34,6 +36,7 @@ export function CardA() {
       price: 690.00,
       originalPrice: 1090.00,
       goto: "https://algochurn.com",
+       quantity:1
     },
     {
       id: "product-id-4",
@@ -42,6 +45,7 @@ export function CardA() {
       price: 590.00,
       originalPrice: 990.00,
       goto: "https://algochurn.com",
+       quantity:1
     },
     {
       id: "product-id-5",
@@ -50,6 +54,7 @@ export function CardA() {
       price: 490.00,
       originalPrice: 890.00,
       goto: "https://algochurn.com",
+      quantity:1
     },
     {
       id: "product-id-6",
@@ -58,6 +63,7 @@ export function CardA() {
       price: 690.00,
       originalPrice: 1090.00,
       goto: "https://algochurn.com",
+       quantity:1
     },
   ];
 
