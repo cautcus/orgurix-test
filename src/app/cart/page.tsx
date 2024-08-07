@@ -5,6 +5,7 @@ import { auth, db } from "@/app/auth/firebase"; // Ensure correct import paths
 import { doc, getDoc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
 import Image from "next/image";
 import { Topnav } from "@/components/navbar/topnav";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 interface CartItem {
   id: string;
@@ -20,6 +21,7 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
+  const cost = totalPrice + 50;
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -123,7 +125,8 @@ const CartPage = () => {
     <>
       <Topnav />
       <div className="h-screen pt-20">
-        <h1 className="mb-10 text-center text-2xl font-bold text-white">Cart Items</h1>
+      <div className="mx-auto max-w-5xl pt-20 text-left">
+      <TextGenerateEffect words="Shopping Cart"/></div>
         <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
           <div className="rounded-lg md:w-2/3">
             {cartItems.map((item) => (
@@ -160,7 +163,7 @@ const CartPage = () => {
                     </div>
                     <div className="flex items-center space-x-4">
                       <p className="text-sm">₹{item.price * item.quantity}</p>
-                      <button onClick={() => handleDeleteItem(item.id)}>
+                      <button onClick={() => handleDeleteItem(item.id)} >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -191,11 +194,10 @@ const CartPage = () => {
             <div className="flex justify-between">
               <p className="text-lg font-bold">Total</p>
               <div>
-                <p className="mb-1 text-lg font-bold">₹{totalPrice + 50}</p>
-                <p className="text-sm text-gray-700">including VAT</p>
+                <p className="mb-1 text-lg font-bold">₹{cost}</p>
               </div>
             </div>
-            <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">
+            <button className="px-8 py-2 mt-6 w-full bg-black text-white text-sm rounded-md font-semibold hover:bg-black/[0.8] hover:shadow-lg">
               Check out
             </button>
           </div>
