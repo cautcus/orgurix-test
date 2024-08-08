@@ -6,6 +6,7 @@ import { doc, getDoc, updateDoc, arrayRemove, arrayUnion } from "firebase/firest
 import Image from "next/image";
 import { Topnav } from "@/components/navbar/topnav";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import Footer from "@/components/footer/Footer";
 
 interface CartItem {
   id: string;
@@ -21,7 +22,6 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
-  const cost = totalPrice + 50;
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -125,7 +125,7 @@ const CartPage = () => {
     <>
       <Topnav />
       <div className="h-screen pt-20">
-      <div className="mx-auto max-w-5xl pt-20 text-left">
+      <div className="mx-auto max-w-5xl  text-left">
       <TextGenerateEffect words="Shopping Cart"/></div>
         <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
           <div className="rounded-lg md:w-2/3">
@@ -143,7 +143,7 @@ const CartPage = () => {
                     <div className="flex items-center border-gray-100">
                       <button
                         onClick={() => handleQuantityChange(item.id, Math.max(item.quantity - 1, 1))}
-                        className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
+                        className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-green-500 hover:text-green-50"
                       >
                         -
                       </button>
@@ -156,7 +156,7 @@ const CartPage = () => {
                       />
                       <button
                         onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                        className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
+                        className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-green-500 hover:text-green-50"
                       >
                         +
                       </button>
@@ -186,15 +186,11 @@ const CartPage = () => {
               <p className="text-gray-700">Subtotal</p>
               <p className="text-gray-700">₹{totalPrice}</p>
             </div>
-            <div className="flex justify-between">
-              <p className="text-gray-700">Shipping</p>
-              <p className="text-gray-700">₹50</p>
-            </div>
             <hr className="my-4" />
             <div className="flex justify-between">
               <p className="text-lg font-bold">Total</p>
               <div>
-                <p className="mb-1 text-lg font-bold">₹{cost}</p>
+                <p className="mb-1 text-lg font-bold">₹{totalPrice}</p>
               </div>
             </div>
             <button className="px-8 py-2 mt-6 w-full bg-black text-white text-sm rounded-md font-semibold hover:bg-black/[0.8] hover:shadow-lg">
@@ -203,6 +199,7 @@ const CartPage = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

@@ -37,7 +37,7 @@ export const Hero = ({
           return (
             <motion.span
               key={word + idx}
-              className="dark:text-white text-black opacity-0"
+              className="text-green-200 opacity-0"
               style={{
                 filter: filter ? "blur(10px)" : "none",
               }}

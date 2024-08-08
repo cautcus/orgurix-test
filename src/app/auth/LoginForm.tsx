@@ -14,7 +14,7 @@ import {
   updateProfile,
 } from "./firebase";
 import { doc, setDoc } from "firebase/firestore";
-import { firestore } from "./firebase"; // Ensure to import Firestore instance
+import { firestore } from "./firebase";
 
 export default function AuthForm() {
   const [email, setEmail] = useState<string>("");
@@ -174,7 +174,7 @@ export default function AuthForm() {
           <div className="text-right mt-4">
             <button
               type="button"
-              className="text-sm text-blue-500 hover:underline"
+              className="text-sm text-green-500 hover:underline"
               onClick={() => setShowResetModal(true)}
             >
               Forgot Password?
@@ -254,8 +254,8 @@ export default function AuthForm() {
 const BottomGradient = () => {
   return (
     <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-green-500 to-transparent" />
+      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-green-500 to-transparent" />
     </>
   );
 };

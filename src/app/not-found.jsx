@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Topnav } from "@/components/navbar/topnav";
+import Footer from "@/components/footer/Footer";
 
 export default function NotFound() {
   return (
@@ -21,6 +22,7 @@ export default function NotFound() {
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }

@@ -86,7 +86,7 @@ export function CardA() {
                 <div className="mt-4">
                   <CardItem
                     translateZ="100"
-                    className="text-xl font-bold text-neutral-600 dark:text-white"
+                    className="text-xl font-bold text-green-200"
                   >
                     {product.name}
                   </CardItem>
@@ -103,14 +103,14 @@ export function CardA() {
                     translateZ={20}
                     as="button"
                     
-                    className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
+                    className="px-4 py-2 rounded-xl bg-green-800 text-white text-xs font-bold"
                   >
                     <a href={product.goto}>Buy Now</a>
                   </CardItem>
                   <CardItem
                     translateZ={20}
                     as="button"
-                    className="px-4 py-2 rounded-xl bg-black text-white text-xs font-bold"
+                    className="px-4 py-2 rounded-xl bg-black text-green-200 text-xs font-bold"
                     onClick={() => handleAddToCart(product)}
                   >
                     Add to cart

@@ -70,10 +70,10 @@ export const Menu = ({
   return (
     <nav
       onMouseLeave={() => setActive(null)} // resets the state
-      className="relative rounded-full boder border-transparent dark:border-white/[0.2] shadow-input flex justify-center space-x-4 px-8 py-6"
+      className="relative  rounded-full boder border-transparent dark:border-white/[0.2] shadow-input flex justify-center space-x-4 px-8 py-6"
       style={{
         background:
-          "linear-gradient(180deg, var(--slate-800), var(--slate-900)",
+          "linear-gradient(180deg, #1a3c40, #0d1f22)",
       }}
     >
       {children}
