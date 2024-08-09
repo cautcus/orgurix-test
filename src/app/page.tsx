@@ -10,8 +10,6 @@ import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { AppleCardsCarouselDemo } from "@/components/carousel/carousel";
 
 
-
-
 export default function Home() {
   return (
     <>

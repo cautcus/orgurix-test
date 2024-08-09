@@ -60,7 +60,7 @@ export function DGrid() {
       <div className="pt-8" />
       {showAlert && (
         <div
-          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+          className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
           role="alert"
         >
           <span className="block sm:inline">{alertMessage}</span>
@@ -69,7 +69,7 @@ export function DGrid() {
             onClick={() => setShowAlert(false)}
           >
             <svg
-              className="fill-current h-6 w-6 text-red-500"
+              className="fill-current h-6 w-6 text-green-500"
               role="button"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"

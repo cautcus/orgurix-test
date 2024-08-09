@@ -20,11 +20,8 @@ export function AppleCardsCarouselDemo() {
 
 const DummyContent = () => {
   return (
-    <>
-      {[...new Array(3).fill(1)].map((_, index) => {
-        return (
+    <> 
           <div
-            key={"dummy-content" + index}
             className="bg-[#F5F5F7] dark:bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4"
           >
             <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
@@ -45,7 +42,6 @@ const DummyContent = () => {
             />
           </div>
         );
-      })}
     </>
   );
 };

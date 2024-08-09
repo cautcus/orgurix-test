@@ -1,7 +1,7 @@
 /** @type {import { 'next' }.NextConfig} */
 module.exports = {
     images: {
-      domains: ['assets.aceternity.com','images.unsplash.com','pbs.twimg.com','aceternity.com','drive.google.com','orgurix.vercel.app'],
+      domains: ['assets.aceternity.com','images.unsplash.com','pbs.twimg.com','aceternity.com','images.remotePatterns','orgurix.vercel.app'],
       formats:['image/avif', 'image/webp'],
       remotePatterns: [
         {

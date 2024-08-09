@@ -110,10 +110,10 @@ export default function AuthForm() {
         </div>
       )}
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
-        {isSignup ? "Create an Account" : "Welcome to Aceternity"}
+        Welcome to OrguriX
       </h2>
       <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-        {isSignup ? "Sign up to join Aceternity" : "Login to Aceternity"}
+        {isSignup ? "Sign up to join OrguriX" : "Login to OrguriX"}
       </p>
 
       <form className="my-8" onSubmit={isSignup ? handleSignupSubmit : handleLoginSubmit}>
@@ -123,7 +123,7 @@ export default function AuthForm() {
               <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
-                placeholder="John Doe"
+                placeholder="Mr.Nature"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -133,7 +133,7 @@ export default function AuthForm() {
               <Label htmlFor="phoneNumber">Phone Number (Optional)</Label>
               <Input
                 id="phoneNumber"
-                placeholder="123-456-7890"
+                placeholder="+91-0123456789"
                 type="text"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
@@ -145,7 +145,7 @@ export default function AuthForm() {
           <Label htmlFor="email">Email Address</Label>
           <Input
             id="email"
-            placeholder="projectmayhem@fc.com"
+            placeholder="orgurix.in@gmail.com"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -174,7 +174,7 @@ export default function AuthForm() {
           <div className="text-right mt-4">
             <button
               type="button"
-              className="text-sm text-green-500 hover:underline"
+              className="text-sm text-green-500 hover:text-green-200"
               onClick={() => setShowResetModal(true)}
             >
               Forgot Password?
@@ -238,7 +238,7 @@ export default function AuthForm() {
         </button>
             </form>
             <button
-              className="mt-4 text-sm text-blue-500 hover:underline"
+              className="mt-4 text-sm text-green-500 hover:text-green-200"
               onClick={() => setShowResetModal(false)}
             >
               Close
