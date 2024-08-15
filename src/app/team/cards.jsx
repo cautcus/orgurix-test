@@ -63,7 +63,7 @@ const teamMembers = [
     initials: "SD",
     name: "Shreyas Das",
     title: "Co-Founder & COO",
-    instagram: "https://www.linkedin.com/in/shreyas-das-00a273321/",
+    linkedin: "https://www.linkedin.com/in/shreyas-das-00a273321/",
     image:'/img/shreyas-dp.jpg',
   }
 ];

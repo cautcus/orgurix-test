@@ -1,3 +1,5 @@
+"use client";
+
 import { Topnav } from "@/components/navbar/topnav";
 import React, {useState,useEffect} from "react";
 import Heading from "./heading";
