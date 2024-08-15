@@ -1,3 +1,5 @@
+"use client";
+import React, { useEffect, useState } from "react";
 import { Topnav } from "@/components/navbar/topnav";
 import Coming from "@/components/waitlist/coming";
 import { TextGenerateEffect } from "../components/ui/text-generate-effect";
@@ -9,9 +11,24 @@ import Footer from "@/components/footer/Footer";
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { AppleCardsCarouselDemo } from "@/components/carousel/carousel";
 import { Slider } from "@/components/banner/slider";
+import SpinnerLoader from '@/components/ui/loader';
 
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false); 
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <SpinnerLoader />;
+  }
+
 
   return (
     <>

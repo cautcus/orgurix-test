@@ -6,6 +6,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+import SpinnerLoader from '@/components/ui/loader';
 
 interface OrderItem {
   id: string;
@@ -54,7 +55,7 @@ const OrderPage = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-white">Loading...</div>;
+    return  <SpinnerLoader />;
   }
 
   return (

@@ -1,11 +1,26 @@
 "use client";
 
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+import SpinnerLoader from '@/components/ui/loader';
 
 const HelpCenterPage = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false); 
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <SpinnerLoader />;
+  }
+
   return (
     <div className="text-white min-h-screen flex flex-col justify-between bg-neutral-900">
           <GoogleAnalytics/>

@@ -6,6 +6,7 @@ import { auth, db } from "@/app/auth/firebase";
 import { IconShoppingCart } from "@tabler/icons-react";
 import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
+import SpinnerLoader from '@/components/ui/loader';
 
 interface Product {
   id: string;
@@ -110,7 +111,7 @@ const ProductOverviewPage = () => {
   };
 
   if (loading) {
-    return <div className="text-white">Loading...</div>;
+    return  <SpinnerLoader />;
   }
 
   if (!product) {

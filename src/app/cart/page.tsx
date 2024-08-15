@@ -8,6 +8,7 @@ import { Topnav } from "@/components/navbar/topnav";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import Footer from "@/components/footer/Footer";
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+import SpinnerLoader from '@/components/ui/loader';
 
 interface CartItem {
   id: string;
@@ -94,7 +95,7 @@ const CartPage = () => {
   };
 
   if (loading) {
-    return <div className="text-white">Loading...</div>;
+    return  <SpinnerLoader />;
   }
 
   return (
