@@ -6,6 +6,7 @@ import { auth, db } from "@/app/auth/firebase";
 import { IconShoppingCart } from "@tabler/icons-react";
 import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 interface Product {
   id: string;
@@ -120,6 +121,7 @@ const ProductOverviewPage = () => {
 
   return (
     <>
+        <GoogleAnalytics/>
       <Topnav />
       <section className="text-gray-400 body-font overflow-hidden">
         <div className="container px-5 py-24 mx-auto">

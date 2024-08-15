@@ -8,6 +8,7 @@ import { Reviews } from "@/components/review/review";
 import Footer from "@/components/footer/Footer";
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { AppleCardsCarouselDemo } from "@/components/carousel/carousel";
+import { Slider } from "@/components/banner/slider";
 
 
 export default function Home() {
@@ -16,7 +17,7 @@ export default function Home() {
     <>
     <GoogleAnalytics/>
       <Topnav />
-      <div className="p-6" />
+      <Slider/>
     <AppleCardsCarouselDemo/>
       {/* <Coming/>  */}
       <div>

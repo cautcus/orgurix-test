@@ -6,6 +6,8 @@ import { onAuthStateChanged, User } from "firebase/auth";
 import AddProduct from "./productdb";
 import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
+import SpinnerLoader from '@/components/ui/loader';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 const ADMIN_USER_ID = "IEtzL6BTfiMYtH5dOEr3son1Zrr2"; 
 
@@ -38,7 +40,7 @@ const AdminPage = () => {
   }, [loading, isAdmin]);
 
   if (loading) {
-    return <div className="text-white">Loading...</div>;
+    return  <SpinnerLoader />;
   }
 
   if (!isAdmin) {
@@ -52,9 +54,9 @@ const AdminPage = () => {
 
   return (
     <div className="text-white">
+          <GoogleAnalytics/>
       <Topnav />
-      <h1>Admin Dashboard</h1>
-      <p>Welcome, Admin</p>
+      <div className="pt-24"/>
       <AddProduct/>
       <Footer/>
     </div>

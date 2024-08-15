@@ -3,10 +3,12 @@
 import React from 'react';
 import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 const PrivacyPolicyPage = () => {
   return (
     <div className="text-white min-h-screen flex flex-col justify-between bg-neutral-900">
+          <GoogleAnalytics/>
       <Topnav />
       <main className="flex-grow">
         <section className="py-16 px-4 md:px-8">

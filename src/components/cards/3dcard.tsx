@@ -127,7 +127,7 @@ export function CardA() {
                     translateZ="60"
                     className="text-neutral-500 text-sm max-w-sm mt-2 dark:text-neutral-300"
                   >
-                    ₹ <span className="line-through">{product.originalPrice}</span> {product.price}
+                    ₹ <span className="line-through">{product.originalPrice}</span>{product.price}
                   </CardItem>
                 </div>
                 <div className="flex justify-between items-center mt-4">

@@ -5,10 +5,12 @@ import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 import { Hero } from '@/components/banner/hero';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 const AboutUsPage = () => {
   return (
     <div className="text-white min-h-screen flex flex-col justify-between">
+          <GoogleAnalytics/>
       <Topnav />
       <main className="flex-grow">
       <Hero words=" Welcome to OrguriX"/>

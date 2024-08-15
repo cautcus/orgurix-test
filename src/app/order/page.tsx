@@ -5,6 +5,7 @@ import { auth, db } from "@/app/auth/firebase"; // Ensure correct import paths
 import { doc, getDoc } from "firebase/firestore";
 import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 interface OrderItem {
   id: string;
@@ -58,6 +59,7 @@ const OrderPage = () => {
 
   return (
     <>
+        <GoogleAnalytics/>
       <Topnav />
       <div className="h-screen pt-20">
         <div className="mx-auto max-w-5xl px-6">

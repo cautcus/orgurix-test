@@ -62,7 +62,7 @@ function Navbar({ className }: { className?: string }) {
       <Menu setActive={setActive}>
         <HoveredLink href="/">Home</HoveredLink>
         <MenuItem setActive={setActive} active={active} item="Products">
-          <div className="  text-sm grid grid-cols-2 gap-10 p-4">
+          <div className="  text-sm grid grid-cols-1 gap-10 p-4">
             <ProductItem
               title="Algochurn"
               href="https://algochurn.com"
@@ -91,16 +91,16 @@ function Navbar({ className }: { className?: string }) {
         </MenuItem>
         <HoveredLink href="/about">About</HoveredLink>
           <h1 className="text-neutral-200 hover:text-neutral-400" >|</h1>
-          {isAdmin ? (<>
-            <HoveredLink href="/admin">Admin</HoveredLink>
-          </>) : null}
           {user ? (
             <>
             <div className="space-x-4">
             <MenuItem setActive={setActive} active={active} item="Profile">
-            <div className="text-sm grid grid-cols-2 gap-6 p-4">
-            <HoveredLink className="text-neutral-200 hover:text-neutral-400" href="/dashboard">{user.displayName || "Dashboard"}</HoveredLink>
-            <button className="text-neutral-200 hover:text-neutral-400 pointer" onClick={handleLogout}>Logout</button></div>
+            <div className="text-sm grid grid-cols-1 gap-6 p-4">
+            {isAdmin ? (<>
+            <HoveredLink href="/admin">Admin</HoveredLink>
+          </>) : <HoveredLink className="text-neutral-200 hover:text-neutral-400" href="/dashboard">{user.displayName || "Dashboard"}</HoveredLink>}
+            <HoveredLink href="#" className="text-neutral-200 hover:text-neutral-400 pointer" >
+            <button onClick={handleLogout}>Logout</button></HoveredLink></div>
             </MenuItem>
             </div>
             <HoveredLink href="/cart">Cart</HoveredLink>
@@ -108,22 +108,6 @@ function Navbar({ className }: { className?: string }) {
           ) : (
             <HoveredLink href="/auth">Login</HoveredLink>
           )}
-        {/* <MenuItem setActive={setActive} active={active} item="Pricing">
-          <div className="flex flex-col space-y-4 text-sm">
-            <HoveredLink href="/hobby">Hobby</HoveredLink>
-            <HoveredLink href="/individual">Individual</HoveredLink>
-            <HoveredLink href="/team">Team</HoveredLink>
-            <HoveredLink href="/enterprise">Enterprise</HoveredLink>
-          </div>
-        </MenuItem>
-        <MenuItem setActive={setActive} active={active} item="Services">
-          <div className="flex flex-col space-y-4 text-sm">
-            <HoveredLink href="/shop">Web Development</HoveredLink>
-            <HoveredLink href="/interface-design">Interface Design</HoveredLink>
-            <HoveredLink href="/seo">Search Engine Optimization</HoveredLink>
-            <HoveredLink href="/branding">Branding</HoveredLink>
-          </div>
-        </MenuItem> */}
       </Menu>
     </div>
     {showAlert && (

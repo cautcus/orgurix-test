@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Topnav } from "@/components/navbar/topnav";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import Footer from "@/components/footer/Footer";
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 interface CartItem {
   id: string;
@@ -98,6 +99,7 @@ const CartPage = () => {
 
   return (
     <>
+        <GoogleAnalytics/>
       <Topnav />
       <div className="h-screen pt-20">
       <div className="mx-auto max-w-5xl  text-left">

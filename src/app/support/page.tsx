@@ -4,10 +4,12 @@ import React from 'react';
 import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
 import { Hero } from '@/components/banner/hero';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 const CustomerSupportPage = () => {
   return (
     <div className="text-white min-h-screen flex flex-col justify-between">
+          <GoogleAnalytics/>
       <Topnav />
       <main className="flex-grow">
       <Hero words="Customer Support"/>
