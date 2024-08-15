@@ -54,7 +54,7 @@ const AdminPage = () => {
     <div className="text-white">
       <Topnav />
       <h1>Admin Dashboard</h1>
-      <p>Welcome, Admin!</p>
+      <p>Welcome, Admin</p>
       <AddProduct/>
       <Footer/>
     </div>
