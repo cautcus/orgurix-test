@@ -1,14 +1,13 @@
 "use client";
 
 import { Topnav } from "@/components/navbar/topnav";
-import React, {useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Heading from "./heading";
 import Team from "./cards";
-import GoogleAnalytics from '@/components/GoogleAnalytics';
-import SpinnerLoader from '@/components/ui/loader';
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import SpinnerLoader from "@/components/ui/loader";
 
-export default function team() {
-
+export default function TeamPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,7 +27,7 @@ export default function team() {
       <GoogleAnalytics />
       <Topnav />
       <Heading />
-      <Team/>
+      <Team />
     </div>
   );
 }
