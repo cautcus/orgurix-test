@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { HoveredLink, Menu, MenuItem, ProductItem } from "./navbar-menu";
 import { cn } from "@/lib/utils";
+import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/app/auth/firebase";
 import { signOut } from "firebase/auth";
 
@@ -19,12 +20,25 @@ function Navbar({ className }: { className?: string }) {
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [active, setActive] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const ADMIN_USER_ID = "IEtzL6BTfiMYtH5dOEr3son1Zrr2";
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(user);
+      if (currentUser) {
+        setUser(currentUser);
+        setIsAdmin(currentUser.uid === ADMIN_USER_ID);
+      } else {
+        setUser(null);
+        setIsAdmin(false);
+      }
+      setLoading(false);
     });
     return () => unsubscribe();
+    
   }, []);
 
   const handleLogout = async () => {
@@ -38,6 +52,7 @@ function Navbar({ className }: { className?: string }) {
       setShowAlert(true);
     }
   };
+
 
   return (
     <>
@@ -76,6 +91,9 @@ function Navbar({ className }: { className?: string }) {
         </MenuItem>
         <HoveredLink href="/about">About</HoveredLink>
           <h1 className="text-neutral-200 hover:text-neutral-400" >|</h1>
+          {isAdmin ? (<>
+            <HoveredLink href="/admin">Admin</HoveredLink>
+          </>) : null}
           {user ? (
             <>
             <div className="space-x-4">

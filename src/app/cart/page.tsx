@@ -14,7 +14,9 @@ interface CartItem {
   image: string;
   originalPrice: number;
   price: number;
-  quantity: number;
+  color: string;
+  size: string;
+  rating: number;
   goto: string;
 }
 
@@ -22,6 +24,8 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [alertMessage, setAlertMessage] = useState<string>("");
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -41,6 +45,8 @@ const CartPage = () => {
         }
       } catch (error) {
         console.error("Error fetching cart items:", error);
+        setAlertMessage("Error adding product to cart.");
+      setShowAlert(true);
       } finally {
         setLoading(false);
       }
@@ -68,52 +74,21 @@ const CartPage = () => {
             const updatedItems = cartItems.filter((item) => item.id !== itemId);
             setCartItems(updatedItems);
             calculateTotal(updatedItems);
-            alert("Item removed successfully.");
+            console.log("Item removed successfully.");
+            setAlertMessage("Item removed successfully");
+      setShowAlert(true);
           }
         }
       }
     } catch (error) {
       console.error("Error deleting cart item:", error);
-    }
-  };
-
-  const handleQuantityChange = async (itemId: string, newQuantity: number) => {
-    try {
-      const user = auth.currentUser;
-      if (user) {
-        const cartDoc = doc(db, "carts", user.uid);
-        const cartSnapshot = await getDoc(cartDoc);
-
-        if (cartSnapshot.exists()) {
-          const items = cartSnapshot.data().items || [];
-          const itemToUpdate = items.find((item: CartItem) => item.id === itemId);
-
-          if (itemToUpdate) {
-            const updatedItem = { ...itemToUpdate, quantity: newQuantity };
-
-            await updateDoc(cartDoc, {
-              items: arrayRemove(itemToUpdate),
-            });
-
-            await updateDoc(cartDoc, {
-              items: arrayUnion(updatedItem),
-            });
-
-            const updatedItems = cartItems.map((item) =>
-              item.id === itemId ? updatedItem : item
-            );
-            setCartItems(updatedItems);
-            calculateTotal(updatedItems);
-          }
-        }
-      }
-    } catch (error) {
-      console.error("Error updating quantity:", error);
+      setAlertMessage("Error deleting cart item.");
+      setShowAlert(true);
     }
   };
 
   const calculateTotal = (items: CartItem[]) => {
-    const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const total = items.reduce((acc, item) => acc + item.price * 1, 0);
     setTotalPrice(total);
   };
 
@@ -126,6 +101,28 @@ const CartPage = () => {
       <Topnav />
       <div className="h-screen pt-20">
       <div className="mx-auto max-w-5xl  text-left">
+      {showAlert && (
+        <div
+        className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+        role="alert"
+      >
+        <span className="block sm:inline">{alertMessage}</span>
+        <span
+          className="absolute top-0 bottom-0 right-0 px-4 py-3"
+          onClick={() => setShowAlert(false)}
+        >
+          <svg
+            className="fill-current h-6 w-6 text-green-500"
+            role="button"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <title>Close</title>
+            <path d="M14.348 5.652a.5.5 0 0 0-.707 0L10 9.293 6.36 5.652a.5.5 0 1 0-.707.707L9.293 10l-3.64 3.641a.5.5 0 0 0 .707.707L10 10.707l3.641 3.641a.5.5 0 0 0 .707-.707L10.707 10l3.641-3.641a.5.5 0 0 0 0-.707z" />
+          </svg>
+        </span>
+      </div>
+      )}
       <TextGenerateEffect words="Shopping Cart"/></div>
         <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
           <div className="rounded-lg md:w-2/3">
@@ -136,33 +133,19 @@ const CartPage = () => {
                   <div className="mt-5 sm:mt-0">
                     <h2 className="text-lg font-bold text-gray-900">{item.name}</h2>
                     <p className="mt-1 text-xs text-gray-700">
-                      ₹ <span className="line-through">{item.originalPrice}</span> {item.price}
+                     <span className="line-through">₹{item.originalPrice}</span> ₹{item.price}
+                    </p>
+                    <p className="mt-1 text-xs text-gray-700">
+                      {item.color} / {item.size}
+                    </p>
+                    <p className="mt-1 text-xs text-gray-700">
+                      Rating: {item.rating}
                     </p>
                   </div>
+                  
                   <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
-                    <div className="flex items-center border-gray-100">
-                      <button
-                        onClick={() => handleQuantityChange(item.id, Math.max(item.quantity - 1, 1))}
-                        className="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-green-500 hover:text-green-50"
-                      >
-                        -
-                      </button>
-                      <input
-                        className="h-8 w-8 border bg-white text-center text-xs outline-none"
-                        type="number"
-                        value={item.quantity}
-                        onChange={(e) => handleQuantityChange(item.id, Math.max(parseInt(e.target.value), 1))}
-                        min="1"
-                      />
-                      <button
-                        onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                        className="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-green-500 hover:text-green-50"
-                      >
-                        +
-                      </button>
-                    </div>
                     <div className="flex items-center space-x-4">
-                      <p className="text-sm">₹{item.price * item.quantity}</p>
+                      <p className="text-sm">₹{item.price}</p>
                       <button onClick={() => handleDeleteItem(item.id)} >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -182,11 +165,6 @@ const CartPage = () => {
             ))}
           </div>
           <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
-            <div className="mb-2 flex justify-between">
-              <p className="text-gray-700">Subtotal</p>
-              <p className="text-gray-700">₹{totalPrice}</p>
-            </div>
-            <hr className="my-4" />
             <div className="flex justify-between">
               <p className="text-lg font-bold">Total</p>
               <div>

@@ -1,0 +1,215 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { doc, getDoc, updateDoc, setDoc, arrayUnion } from "firebase/firestore";
+import { auth, db } from "@/app/auth/firebase";
+import { IconShoppingCart } from "@tabler/icons-react";
+import { Topnav } from "@/components/navbar/topnav";
+import Footer from "@/components/footer/Footer";
+
+interface Product {
+  id: string;
+  name: string;
+  image: string;
+  price: number;
+  originalPrice: number;
+  description: string;
+  size: string;
+  color: string;
+  rating: number;
+}
+
+const ProductOverviewPage = () => {
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [alertMessage, setAlertMessage] = useState<string>("");
+  const productId = "product-id-3";
+
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        const productDoc = doc(db, "products", productId);
+        const productSnapshot = await getDoc(productDoc);
+
+        if (productSnapshot.exists()) {
+          setProduct(productSnapshot.data() as Product);
+        } else {
+          setProduct(null);
+        }
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductDetails();
+  }, [productId]);
+
+  const handleAddToWish = async (product: any) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        setAlertMessage("No user is logged in.");
+        setShowAlert(true);
+        return;
+      }
+
+      const cartRef = doc(db, "wishlists", user.uid);
+      const cartDoc = await getDoc(cartRef);
+
+      if (cartDoc.exists()) {
+        await updateDoc(cartRef, {
+          items: arrayUnion(product),
+        });
+      } else {
+        await setDoc(cartRef, {
+          items: [product],
+        });
+      }
+
+      setAlertMessage("Product added to wishlist successfully.");
+      setShowAlert(true);
+    } catch (error) {
+      console.error("Error adding product to wishlist: ", error);
+      setAlertMessage("Error adding product to wishlist.");
+      setShowAlert(true);
+    }
+  };
+
+  const handleAddToCart = async (product: any) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        setAlertMessage("No user is logged in.");
+        setShowAlert(true);
+        return;
+      }
+
+      const cartRef = doc(db, "carts", user.uid);
+      const cartDoc = await getDoc(cartRef);
+
+      if (cartDoc.exists()) {
+        await updateDoc(cartRef, {
+          items: arrayUnion(product),
+        });
+      } else {
+        await setDoc(cartRef, {
+          items: [product],
+        });
+      }
+
+      setAlertMessage("Product added to cart successfully.");
+      setShowAlert(true);
+    } catch (error) {
+      console.error("Error adding product to cart: ", error);
+      setAlertMessage("Error adding product to cart.");
+      setShowAlert(true);
+    }
+  };
+
+  if (loading) {
+    return <div className="text-white">Loading...</div>;
+  }
+
+  if (!product) {
+    return <div className="text-white">Product not found.</div>;
+  }
+
+  return (
+    <>
+      <Topnav />
+      <section className="text-gray-400 body-font overflow-hidden">
+        <div className="container px-5 py-24 mx-auto">
+          {showAlert && (
+            <div
+              className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+              role="alert"
+            >
+              <span className="block sm:inline">{alertMessage}</span>
+              <span
+                className="absolute top-0 bottom-0 right-0 px-4 py-3"
+                onClick={() => setShowAlert(false)}
+              >
+                <svg
+                  className="fill-current h-6 w-6 text-green-500"
+                  role="button"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <title>Close</title>
+                  <path d="M14.348 5.652a.5.5 0 0 0-.707 0L10 9.293 6.36 5.652a.5.5 0 1 0-.707.707L9.293 10l-3.64 3.641a.5.5 0 0 0 .707.707L10 10.707l3.641 3.641a.5.5 0 0 0 .707-.707L10.707 10l3.641-3.641a.5.5 0 0 0 0-.707z" />
+                </svg>
+              </span>
+            </div>
+          )}
+          <div className="lg:w-4/5 mx-auto flex flex-wrap">
+            <div className="lg:w-1/2 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+              <h1 className="text-white text-3xl title-font font-medium mb-4">
+                {product.name}
+              </h1>
+              <div className="flex mb-4">
+                <a className="flex-grow text-green-400 border-b-2 border-green-500 py-2 text-lg px-1">
+                  Description
+                </a>
+              </div>
+              <p className="leading-relaxed mb-4">{product.description}</p>
+              <div className="flex border-t border-gray-800 py-2">
+                <span className="text-gray-500">Color</span>
+                <span className="ml-auto text-white">{product.color}</span>
+              </div>
+              <div className="flex border-t border-gray-800 py-2">
+                <span className="text-gray-500">Size</span>
+                <span className="ml-auto text-white">{product.size}</span>
+              </div>
+              <div className="flex border-t border-b mb-6 border-gray-800 py-2">
+                <span className="text-gray-500">Rating</span>
+                <span className="ml-auto text-white">{product.rating}</span>
+              </div>
+              <div className="flex">
+                <span className="title-font font-medium text-2xl text-white">
+                  ₹<span className="line-through">{product.originalPrice}</span>{" "}
+                  ₹{product.price}
+                </span>
+                <button className="flex ml-auto items-center text-white bg-green-800 border-0 py-2 px-6 focus:outline-none hover:bg-green-500 rounded-3xl">
+                  Buy Now
+                </button>
+                <button
+                  className="rounded-full w-12 h-12 bg-neutral-800 hover:bg-neutral-600 p-0 border-0 inline-flex items-center justify-center text-neutral-200 ml-4"
+                  onClick={() => handleAddToCart(product)}
+                >
+                  <IconShoppingCart stroke={2} />
+                </button>
+                <button
+                  className="rounded-full w-12 h-12 bg-neutral-800 hover:bg-neutral-600 p-0 border-0 inline-flex items-center justify-center text-neutral-200 ml-4"
+                  onClick={() => handleAddToWish(product)}
+                >
+                  <svg
+                    fill="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    className="w-5 h-5"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <img
+              alt={product.id}
+              className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded-3xl"
+              src={product.image}
+            />
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </>
+  );
+};
+
+export default ProductOverviewPage;

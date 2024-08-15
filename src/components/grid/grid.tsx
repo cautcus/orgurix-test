@@ -11,7 +11,7 @@ import Image from "next/image";
 
 export default function Grid() {
   return (
-    <BentoGrid className="max-w-4xl md:auto-rows-[18rem] mx-auto md:auto-rows-[20rem]">
+    <BentoGrid className="max-w-4xl text-green-200 md:auto-rows-[18rem] mx-auto md:auto-rows-[20rem]">
       {items.map((item, i) => (
         <BentoGridItem
           key={i}

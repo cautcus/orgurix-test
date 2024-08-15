@@ -8,6 +8,7 @@ import {
   IconTruckDelivery,
   IconHelp,
   IconLogout,
+  IconMapPin,
 } from "@tabler/icons-react";
 import { Label } from "@/components/login/label";
 import { Input } from "@/components/login/input";
@@ -19,7 +20,8 @@ import {
 } from "@/app/auth/firebase";
 import MyAccount from "./my-account";
 import SupportHelp from "./supportHelp";
-import Wishlist from "./wishlist";
+import Wishlist from "../wishlist/wishlist";
+import SavedAddress from "./addresses"
 
 export function DGrid() {
   const [alertMessage, setAlertMessage] = useState<string>("");
@@ -30,6 +32,7 @@ export function DGrid() {
   const [showMyAccount, setShowMyAccount] = useState<boolean>(false);
   const [showSupportHelp, setShowSupportHelp] = useState<boolean>(false);
   const [showWishlist, setShowWishlist] = useState<boolean>(false);
+  const [showAddress, setShowAddress] = useState<boolean>(false);
 
   const handlePasswordReset = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,39 +85,46 @@ export function DGrid() {
       )}
       <BentoGrid className="mt-12 max-w-4xl mx-auto max-h-2xl cursor-pointer ">
       <a className="md:col-span-2" onClick={() => setShowMyAccount(true)}>
-        <BentoGridItem
+        <BentoGridItem className="text-teal-500"
           title="My Account"
           description="View and update your personal information and manage your account settings."
           icon={<IconUsers className="h-4 w-4 text-teal-500" />}
         />
         </a>
         <a onClick={() => setShowResetModal(true)}>
-          <BentoGridItem
-            className="md:col-span-2 items-left cursor-pointer"
+          <BentoGridItem 
+            className="md:col-span-2 text-cyan-500 items-left cursor-pointer"
             title="Password Reset"
-            description="Forgot your password? Reset it here to regain access to your account."
+            description="Reset it here to regain access to your account."
             icon={<IconKey className="h-4 w-4 text-cyan-500" />}
           />
         </a>
-        <BentoGridItem
+        <a onClick={() => setShowWishlist(true)}>
+        <BentoGridItem className="text-purple-500"
           title="Wishlist"
-          description="Save your favorite items and keep track of products you wish to purchase in the future."
+          description="Save your favorite items and track of products."
           icon={<IconList className="h-4 w-4 text-purple-500" />}
-        />
-        <BentoGridItem
-          className="md:col-span-2"
+        /></a>
+        <a className="md:col-span-2 text-pink-500" onClick={() => setShowAddress(true)}>
+        <BentoGridItem 
+          title="Saved Addresses"
+          description="Manage your saved addresses for faster checkout and delivery."
+          icon={<IconMapPin className="h-4 w-4 text-pink-500" />}
+        /></a>
+        <BentoGridItem 
+          className="md:col-span-3 text-yellow-500"
           title="Your Order"
           description="Review your order history and track the status of your current orders."
           icon={<IconTruckDelivery className="h-4 w-4 text-yellow-500" />}
         />
         <a className="md:col-span-2" onClick={() => setShowSupportHelp(true)}>
-        <BentoGridItem
+        <BentoGridItem className="text-white"
           title="Support/Help"
           description="Need assistance? Contact our support team for help with your orders and account."
           icon={<IconHelp className="h-4 w-4 text-white" />}
         /></a>
         <a onClick={handleLogout}>
-          <BentoGridItem
+          <BentoGridItem className="text-red-500"
             title="Logout"
             description="Sign out of your account securely."
             icon={<IconLogout className="h-4 w-4 text-red-500" />}
@@ -145,7 +155,7 @@ export function DGrid() {
               </button>
             </form>
             <button
-              className="mt-4 text-sm text-blue-500 hover:underline"
+              className="mt-4 text-sm text-green-500 hover:text-green-200"
               onClick={() => setShowResetModal(false)}
             >
               Close
@@ -157,6 +167,8 @@ export function DGrid() {
       {showSupportHelp && <SupportHelp onClose={() => setShowSupportHelp(false)} />}
       {showMyAccount && <MyAccount onClose={() => setShowMyAccount(false)} />}
       {showWishlist && <Wishlist onClose={() => setShowWishlist(false)} />}
+      {showAddress && <SavedAddress onClose={() => setShowAddress(false)} />}
+
     </>
   );
 }

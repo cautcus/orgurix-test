@@ -1,8 +1,7 @@
 import { db, auth } from "@/app/auth/firebase";
 import { doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 
-export const addToCart = async (product: any) => {
-    
+export const addToCart = async (product: any) => { 
   try {
     const user = auth.currentUser;
     if (!user) {
