@@ -40,6 +40,17 @@ const ProductOverviewPage = () => {
   const [reviewText, setReviewText] = useState<string>("");
   const [reviewRating, setReviewRating] = useState<number>(1);
   const productId = "product-id-1";
+  const [shareUrl, setShareUrl] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setShareUrl(window.location.href);
+    }
+  }, []);
+
+  const handleShare = () => {
+    setShowShareOptions(!showShareOptions);
+  };
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -146,9 +157,6 @@ const ProductOverviewPage = () => {
     }
   };
 
-  const handleShare = () => {
-    setShowShareOptions(!showShareOptions);
-  };
 
   const handleSubmitReview = async () => {
     try {
@@ -179,7 +187,6 @@ const ProductOverviewPage = () => {
     }
   };
 
-  const shareUrl = window.location.href; // Assuming you want to share the current page URL
   const shareText = `Check out this product: ${product?.name}`;
 
   if (loading) {
