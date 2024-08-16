@@ -7,7 +7,6 @@ import { auth } from "@/app/auth/firebase";
 import { signOut } from "firebase/auth";
 
 export function Topnav() {
-
   return (
     <div className="relative w-full flex items-center justify-center">
       <Navbar className="top-2" />
@@ -38,7 +37,6 @@ function Navbar({ className }: { className?: string }) {
       setLoading(false);
     });
     return () => unsubscribe();
-    
   }, []);
 
   const handleLogout = async () => {
@@ -53,64 +51,79 @@ function Navbar({ className }: { className?: string }) {
     }
   };
 
-
   return (
     <>
-    <div
-      className={cn("fixed top-10 inset-x-0 max-w-2xl mx-auto z-50", className)}
-    >
-      <Menu setActive={setActive}>
-        <HoveredLink href="/">Home</HoveredLink>
-        <MenuItem setActive={setActive} active={active} item="Products">
-          <div className="  text-sm grid grid-cols-1 gap-10 p-4">
-            <ProductItem
-              title="Algochurn"
-              href="https://algochurn.com"
-              src="https://assets.aceternity.com/demos/algochurn.webp"
-              description="Prepare for tech interviews like never before."
-            />
-            <ProductItem
-              title="Tailwind Master Kit"
-              href="https://tailwindmasterkit.com"
-              src="https://assets.aceternity.com/demos/tailwindmasterkit.webp"
-              description="Production ready Tailwind css components for your next project"
-            />
-            <ProductItem
-              title="Moonbeam"
-              href="https://gomoonbeam.com"
-              src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.51.31%E2%80%AFPM.png"
-              description="Never write from scratch again. Go from idea to blog in minutes."
-            />
-            <ProductItem
-              title="Rogue"
-              href="https://userogue.com"
-              src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png"
-              description="Respond to government RFPs, RFIs and RFQs 10x faster using AI"
-            />
-          </div>
-        </MenuItem>
-        <HoveredLink href="/about">About</HoveredLink>
-          <h1 className="text-neutral-200 hover:text-neutral-400" >|</h1>
+      <div
+        className={cn(
+          "fixed top-10 inset-x-0 max-w-2xl mx-auto z-50",
+          className
+        )}
+      >
+        <Menu setActive={setActive}>
+          <HoveredLink href="/">Home</HoveredLink>
+          <MenuItem setActive={setActive} active={active} item="Products">
+            <div className="  text-sm grid grid-cols-1 gap-10 p-4">
+              <ProductItem
+                title="Algochurn"
+                href="https://algochurn.com"
+                src="https://assets.aceternity.com/demos/algochurn.webp"
+                description="Prepare for tech interviews like never before."
+              />
+              <ProductItem
+                title="Tailwind Master Kit"
+                href="https://tailwindmasterkit.com"
+                src="https://assets.aceternity.com/demos/tailwindmasterkit.webp"
+                description="Production ready Tailwind css components for your next project"
+              />
+              <ProductItem
+                title="Moonbeam"
+                href="https://gomoonbeam.com"
+                src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.51.31%E2%80%AFPM.png"
+                description="Never write from scratch again. Go from idea to blog in minutes."
+              />
+              <ProductItem
+                title="Rogue"
+                href="https://userogue.com"
+                src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png"
+                description="Respond to government RFPs, RFIs and RFQs 10x faster using AI"
+              />
+            </div>
+          </MenuItem>
+          <HoveredLink href="/about">About</HoveredLink>
+          <h1 className="text-neutral-200 hover:text-neutral-400">|</h1>
           {user ? (
             <>
-            <div className="space-x-4">
-            <MenuItem setActive={setActive} active={active} item="Profile">
-            <div className="text-sm grid grid-cols-1 gap-6 p-4">
-            {isAdmin ? (<>
-            <HoveredLink href="/admin">Admin</HoveredLink>
-          </>) : <HoveredLink className="text-neutral-200 hover:text-neutral-400" href="/dashboard">{user.displayName || "Dashboard"}</HoveredLink>}
-            <HoveredLink href="#" className="text-neutral-200 hover:text-neutral-400 pointer" >
-            <button onClick={handleLogout}>Logout</button></HoveredLink></div>
-            </MenuItem>
-            </div>
-            <HoveredLink href="/cart">Cart</HoveredLink>
+              <div className="space-x-4">
+                <MenuItem setActive={setActive} active={active} item="Profile">
+                  <div className="text-sm grid grid-cols-1 gap-6 p-4">
+                    <HoveredLink
+                      className="text-neutral-200 hover:text-neutral-400"
+                      href="/dashboard"
+                    >
+                      {user.displayName || "Dashboard"}
+                    </HoveredLink>
+                    {isAdmin ? (
+                      <>
+                        <HoveredLink href="/admin">Admin</HoveredLink>
+                      </>
+                    ) : null}
+                    <HoveredLink
+                      href="#"
+                      className="text-neutral-200 hover:text-neutral-400 pointer"
+                    >
+                      <button onClick={handleLogout}>Logout</button>
+                    </HoveredLink>
+                  </div>
+                </MenuItem>
+              </div>
+              <HoveredLink href="/cart">Cart</HoveredLink>
             </>
           ) : (
             <HoveredLink href="/auth">Login</HoveredLink>
           )}
-      </Menu>
-    </div>
-    {showAlert && (
+        </Menu>
+      </div>
+      {showAlert && (
         <div
           className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
           role="alert"
