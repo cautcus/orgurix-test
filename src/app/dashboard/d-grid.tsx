@@ -22,6 +22,7 @@ import MyAccount from "./my-account";
 import SupportHelp from "./supportHelp";
 import Wishlist from "../wishlist/wishlist";
 import SavedAddress from "./addresses"
+import OrderPage from "../order/page";
 
 export function DGrid() {
   const [alertMessage, setAlertMessage] = useState<string>("");
@@ -33,6 +34,7 @@ export function DGrid() {
   const [showSupportHelp, setShowSupportHelp] = useState<boolean>(false);
   const [showWishlist, setShowWishlist] = useState<boolean>(false);
   const [showAddress, setShowAddress] = useState<boolean>(false);
+  const [showOrder, setShowOrder] = useState<boolean>(false);
 
   const handlePasswordReset = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -111,12 +113,12 @@ export function DGrid() {
           description="Manage your saved addresses for faster checkout and delivery."
           icon={<IconMapPin className="h-4 w-4 text-pink-500" />}
         /></a>
+        <a className="md:col-span-3 text-yellow-500" onClick={() => setShowOrder(true)}>
         <BentoGridItem 
-          className="md:col-span-3 text-yellow-500"
           title="Your Order"
           description="Review your order history and track the status of your current orders."
           icon={<IconTruckDelivery className="h-4 w-4 text-yellow-500" />}
-        />
+        /></a>
         <a className="md:col-span-2" onClick={() => setShowSupportHelp(true)}>
         <BentoGridItem className="text-white"
           title="Support/Help"
@@ -168,6 +170,7 @@ export function DGrid() {
       {showMyAccount && <MyAccount onClose={() => setShowMyAccount(false)} />}
       {showWishlist && <Wishlist onClose={() => setShowWishlist(false)} />}
       {showAddress && <SavedAddress onClose={() => setShowAddress(false)} />}
+      {showOrder && <OrderPage onClose={() => setShowOrder(false)} />}
 
     </>
   );

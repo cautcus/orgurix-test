@@ -26,7 +26,7 @@ interface Order {
   totalAmount: number;
 }
 
-const OrderPage = () => {
+const OrderPage = ({ onClose }: { onClose: () => void }) => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
