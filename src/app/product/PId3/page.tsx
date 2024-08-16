@@ -188,6 +188,7 @@ const ProductOverviewPage = () => {
   };
 
   const shareText = `Check out this product: ${product?.name}`;
+  const buyText = `Hey I want to buy: ${product?.name}`;
 
   if (loading) {
     return <SpinnerLoader />;
@@ -247,20 +248,15 @@ const ProductOverviewPage = () => {
               <div className="flex border-t border-b mb-6 border-gray-800 py-2">
                 <span className="text-gray-500">Rating</span>
                 <span className="ml-auto text-white flex items-center">
-                  {Array.from({ length: 5 }, (_, index) => (
-                    <IconStar
-                      key={index}
-                      stroke={2}
-                      className={`w-5 h-5 ${
-                        index < product.rating ? "text-yellow-400" : "text-gray-500"
-                      }`}
-                    />
-                  ))}
+                  {product.rating}
                 </span>
               </div>
               <div className="flex items-center py-2">
               <button className="flex mr-auto items-center text-white bg-green-800 border-0 py-2 px-6 focus:outline-none hover:bg-green-500 rounded-3xl">
-                  Buy Now
+                 <a href={`https://wa.me/918981918040/?text=${encodeURIComponent(
+                          buyText
+                        )}%20,from ${encodeURIComponent(shareUrl)}`}
+                        target="_blank">Buy Now</a>
                 </button>
               <button
                     className="rounded-full ml-auto w-12 h-12 bg-neutral-800 hover:bg-neutral-600 p-0 border-0 inline-flex items-center justify-center text-neutral-200 transition-transform duration-300 transform hover:scale-110"

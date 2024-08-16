@@ -8,6 +8,7 @@ import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import SpinnerLoader from '@/components/ui/loader';
+import BuyNowForm from "../buyNow";
 
 interface Product {
   id: string;
@@ -41,6 +42,7 @@ const ProductOverviewPage = () => {
   const [reviewRating, setReviewRating] = useState<number>(1);
   const productId = "product-id-1";
   const [shareUrl, setShareUrl] = useState('');
+  const [showPopUp, setShowPopUp] = useState<boolean>(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -157,6 +159,41 @@ const ProductOverviewPage = () => {
     }
   };
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  
+    // Check if product is defined and has an id property
+    if (!product || !product.id) {
+      console.error("Product or product ID is undefined");
+      return;
+    }
+  
+    try {
+      // Prepare order data
+      const orderData = {
+        userId: auth.currentUser?.uid, // Ensure the user is authenticated
+        productId: product.id,
+        productName: product.name,
+        productColor: product.color,
+        productDescription: product.description,
+        productImage: product.image,
+        productOriginalPrice: product.originalPrice,
+        productPrice: product.price,
+        productRating: product.rating,
+        productSize: product.size,
+        orderDate: new Date(),
+      };
+  
+      // Add the order to Firestore
+      await addDoc(collection(db, 'orders'), orderData);
+      
+      // Handle successful order placement
+      console.log("Order placed successfully");
+    } catch (error) {
+      console.error("Error placing order:", error);
+    }
+  };
+  
 
   const handleSubmitReview = async () => {
     try {
@@ -188,7 +225,6 @@ const ProductOverviewPage = () => {
   };
 
   const shareText = `Check out this product: ${product?.name}`;
-  const buyText = `Hey I want to buy: ${product?.name}`;
 
   if (loading) {
     return <SpinnerLoader />;
@@ -248,16 +284,23 @@ const ProductOverviewPage = () => {
               <div className="flex border-t border-b mb-6 border-gray-800 py-2">
                 <span className="text-gray-500">Rating</span>
                 <span className="ml-auto text-white flex items-center">
-                  {product.rating}
+                  {Array.from({ length: 5 }, (_, index) => (
+                    <IconStar
+                      key={index}
+                      stroke={2}
+                      className={`w-5 h-5 ${
+                        index < product.rating ? "text-yellow-400" : "text-gray-500"
+                      }`}
+                    />
+                  ))}
                 </span>
               </div>
               <div className="flex items-center py-2">
-              <button className="flex mr-auto items-center text-white bg-green-800 border-0 py-2 px-6 focus:outline-none hover:bg-green-500 rounded-3xl">
-                 <a href={`https://wa.me/918981918040/?text=${encodeURIComponent(
-                          buyText
-                        )}%20,from ${encodeURIComponent(shareUrl)}`}
-                        target="_blank">Buy Now</a>
+              <a onClick={() => setShowPopUp(true)}>
+              <button className="flex mr-auto items-center text-white bg-green-800 border-0 py-2 px-6 focus:outline-none hover:bg-green-500 rounded-3xl" >
+                  Buy Now
                 </button>
+                </a>
               <button
                     className="rounded-full ml-auto w-12 h-12 bg-neutral-800 hover:bg-neutral-600 p-0 border-0 inline-flex items-center justify-center text-neutral-200 transition-transform duration-300 transform hover:scale-110"
                     onClick={() => handleAddToCart(product)}
@@ -393,6 +436,7 @@ const ProductOverviewPage = () => {
           </div>
         </div>
       </section>
+      {showPopUp && <BuyNowForm product={product} onClose={() => setShowPopUp(false)} />}
       <Footer />
     </>
   );

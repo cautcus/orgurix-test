@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { auth, db } from "@/app/auth/firebase"; // Ensure correct import paths
-import { doc, getDoc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayRemove } from "firebase/firestore";
 import Image from "next/image";
 import { Topnav } from "@/components/navbar/topnav";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
@@ -28,6 +28,18 @@ const CartPage = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string>("");
+  const [showShareOptions, setShowShareOptions] = useState<boolean>(false);
+  const [shareUrl, setShareUrl] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setShareUrl(window.location.href);
+    }
+  }, []);
+
+  const handleShare = () => {
+    setShowShareOptions(!showShareOptions);
+  };
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -47,8 +59,8 @@ const CartPage = () => {
         }
       } catch (error) {
         console.error("Error fetching cart items:", error);
-        setAlertMessage("Error adding product to cart.");
-      setShowAlert(true);
+        setAlertMessage("Error fetching cart items.");
+        setShowAlert(true);
       } finally {
         setLoading(false);
       }
@@ -76,9 +88,8 @@ const CartPage = () => {
             const updatedItems = cartItems.filter((item) => item.id !== itemId);
             setCartItems(updatedItems);
             calculateTotal(updatedItems);
-            console.log("Item removed successfully.");
             setAlertMessage("Item removed successfully");
-      setShowAlert(true);
+            setShowAlert(true);
           }
         }
       }
@@ -94,39 +105,59 @@ const CartPage = () => {
     setTotalPrice(total);
   };
 
+  const handleCheckout = () => {
+    const phoneNumber = "918981918040";
+    const message = encodeURIComponent(`
+      *Order Details:*
+      ${cartItems.map(item => `
+      - Name: ${item.name}
+      - Price: ₹${item.price}
+      - Quantity: 1
+      - Color: ${item.color}
+      - Size: ${item.size}
+      - Rating: ${item.rating}
+      `).join('\n')}
+      *Total Price:* ₹${totalPrice}
+    `);
+    const url = `https://wa.me/${phoneNumber}?text=${message}`;
+
+    window.open(url, '_blank');
+  };
+
   if (loading) {
-    return  <SpinnerLoader />;
+    return <SpinnerLoader />;
   }
 
   return (
     <>
-        <GoogleAnalytics/>
+      <GoogleAnalytics />
       <Topnav />
       <div className="h-screen pt-20">
-      <div className="mx-auto max-w-5xl  text-left">
-      {showAlert && (
-        <div
-        className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
-        role="alert"
-      >
-        <span className="block sm:inline">{alertMessage}</span>
-        <span
-          className="absolute top-0 bottom-0 right-0 px-4 py-3"
-          onClick={() => setShowAlert(false)}
-        >
-          <svg
-            className="fill-current h-6 w-6 text-green-500"
-            role="button"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-          >
-            <title>Close</title>
-            <path d="M14.348 5.652a.5.5 0 0 0-.707 0L10 9.293 6.36 5.652a.5.5 0 1 0-.707.707L9.293 10l-3.64 3.641a.5.5 0 0 0 .707.707L10 10.707l3.641 3.641a.5.5 0 0 0 .707-.707L10.707 10l3.641-3.641a.5.5 0 0 0 0-.707z" />
-          </svg>
-        </span>
-      </div>
-      )}
-      <TextGenerateEffect words="Shopping Cart"/></div>
+        <div className="mx-auto max-w-5xl text-left">
+          {showAlert && (
+            <div
+              className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+              role="alert"
+            >
+              <span className="block sm:inline">{alertMessage}</span>
+              <span
+                className="absolute top-0 bottom-0 right-0 px-4 py-3"
+                onClick={() => setShowAlert(false)}
+              >
+                <svg
+                  className="fill-current h-6 w-6 text-green-500"
+                  role="button"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <title>Close</title>
+                  <path d="M14.348 5.652a.5.5 0 0 0-.707 0L10 9.293 6.36 5.652a.5.5 0 1 0-.707.707L9.293 10l-3.64 3.641a.5.5 0 0 0 .707.707L10 10.707l3.641 3.641a.5.5 0 0 0 .707-.707L10.707 10l3.641-3.641a.5.5 0 0 0 0-.707z" />
+                </svg>
+              </span>
+            </div>
+          )}
+          <TextGenerateEffect words="Shopping Cart" />
+        </div>
         <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
           <div className="rounded-lg md:w-2/3">
             {cartItems.map((item) => (
@@ -136,7 +167,7 @@ const CartPage = () => {
                   <div className="mt-5 sm:mt-0">
                     <h2 className="text-lg font-bold text-gray-900">{item.name}</h2>
                     <p className="mt-1 text-xs text-gray-700">
-                     <span className="line-through">₹{item.originalPrice}</span> ₹{item.price}
+                      <span className="line-through">₹{item.originalPrice}</span> ₹{item.price}
                     </p>
                     <p className="mt-1 text-xs text-gray-700">
                       {item.color} / {item.size}
@@ -145,7 +176,7 @@ const CartPage = () => {
                       Rating: {item.rating}
                     </p>
                   </div>
-                  
+
                   <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
                     <div className="flex items-center space-x-4">
                       <p className="text-sm">₹{item.price}</p>
@@ -174,7 +205,10 @@ const CartPage = () => {
                 <p className="mb-1 text-lg font-bold">₹{totalPrice}</p>
               </div>
             </div>
-            <button className="px-8 py-2 mt-6 w-full bg-black text-white text-sm rounded-md font-semibold hover:bg-black/[0.8] hover:shadow-lg">
+            <button
+              onClick={handleCheckout}
+              className="px-8 py-2 mt-6 w-full bg-black text-white text-sm rounded-md font-semibold hover:bg-black/[0.8] hover:shadow-lg"
+            >
               Check out
             </button>
           </div>
