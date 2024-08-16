@@ -26,7 +26,7 @@ interface Order {
   totalAmount: number;
 }
 
-const OrderPage = ({ onClose }: { onClose: () => void }) => {
+const OrderPage = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -99,12 +99,6 @@ const OrderPage = ({ onClose }: { onClose: () => void }) => {
           )}
         </div>
       </div>
-      <button
-        className="mt-4 text-sm text-blue-500 hover:underline"
-        onClick={onClose}
-      >
-        Close
-      </button>
       <Footer />
     </>
   );

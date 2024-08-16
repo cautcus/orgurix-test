@@ -170,7 +170,6 @@ export function DGrid() {
       {showMyAccount && <MyAccount onClose={() => setShowMyAccount(false)} />}
       {showWishlist && <Wishlist onClose={() => setShowWishlist(false)} />}
       {showAddress && <SavedAddress onClose={() => setShowAddress(false)} />}
-      {showOrder && <OrderPage onClose={() => setShowOrder(false)} />}
 
     </>
   );
