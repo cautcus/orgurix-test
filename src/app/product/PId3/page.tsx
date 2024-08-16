@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { doc, getDoc, updateDoc, setDoc, arrayUnion } from "firebase/firestore";
+import { doc, getDoc, updateDoc, setDoc, arrayUnion, collection, addDoc, query, where, onSnapshot } from "firebase/firestore";
 import { auth, db } from "@/app/auth/firebase";
-import { IconShoppingCart } from "@tabler/icons-react";
+import { IconShoppingCart, IconShare, IconCopy, IconBrandFacebook , IconBrandTwitter, IconBrandWhatsapp, IconMail, IconStar,IconHeart, IconMessage  } from "@tabler/icons-react";
 import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 import SpinnerLoader from '@/components/ui/loader';
 
 interface Product {
@@ -20,11 +21,24 @@ interface Product {
   rating: number;
 }
 
+interface Review {
+  id: string;
+  userId: string;
+  userName: string;
+  text: string;
+  rating: number;
+}
+
 const ProductOverviewPage = () => {
   const [product, setProduct] = useState<Product | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<string>("");
+  const [showShareOptions, setShowShareOptions] = useState<boolean>(false);
+  const [showReviewForm, setShowReviewForm] = useState<boolean>(false);
+  const [reviewText, setReviewText] = useState<string>("");
+  const [reviewRating, setReviewRating] = useState<number>(1);
   const productId = "product-id-3";
 
   useEffect(() => {
@@ -46,6 +60,28 @@ const ProductOverviewPage = () => {
     };
 
     fetchProductDetails();
+  }, [productId]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const reviewsRef = collection(db, "reviews");
+        const q = query(reviewsRef, where("productId", "==", productId));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+          const reviewsData: Review[] = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...(doc.data() as Omit<Review, "id">),
+          }));
+          setReviews(reviewsData);
+        });
+
+        return () => unsubscribe();
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
+    fetchReviews();
   }, [productId]);
 
   const handleAddToWish = async (product: any) => {
@@ -110,8 +146,44 @@ const ProductOverviewPage = () => {
     }
   };
 
+  const handleShare = () => {
+    setShowShareOptions(!showShareOptions);
+  };
+
+  const handleSubmitReview = async () => {
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        setAlertMessage("No user is logged in.");
+        setShowAlert(true);
+        return;
+      }
+
+      await addDoc(collection(db, "reviews"), {
+        productId: productId,
+        userId: user.uid,
+        userName: user.displayName || "Anonymous",
+        text: reviewText,
+        rating: reviewRating,
+      });
+
+      setReviewText("");
+      setReviewRating(1);
+      setShowReviewForm(false);
+      setAlertMessage("Review submitted successfully.");
+      setShowAlert(true);
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      setAlertMessage("Error submitting review.");
+      setShowAlert(true);
+    }
+  };
+
+  const shareUrl = window.location.href; // Assuming you want to share the current page URL
+  const shareText = `Check out this product: ${product?.name}`;
+
   if (loading) {
-    return  <SpinnerLoader />;
+    return <SpinnerLoader />;
   }
 
   if (!product) {
@@ -120,6 +192,7 @@ const ProductOverviewPage = () => {
 
   return (
     <>
+      <GoogleAnalytics />
       <Topnav />
       <section className="text-gray-400 body-font overflow-hidden">
         <div className="container px-5 py-24 mx-auto">
@@ -166,48 +239,157 @@ const ProductOverviewPage = () => {
               </div>
               <div className="flex border-t border-b mb-6 border-gray-800 py-2">
                 <span className="text-gray-500">Rating</span>
-                <span className="ml-auto text-white">{product.rating}</span>
-              </div>
-              <div className="flex">
-                <span className="title-font font-medium text-2xl text-white">
-                  ₹<span className="line-through">{product.originalPrice}</span>{" "}
-                  ₹{product.price}
+                <span className="ml-auto text-white flex items-center">
+                  {Array.from({ length: 5 }, (_, index) => (
+                    <IconStar
+                      key={index}
+                      stroke={2}
+                      className={`w-5 h-5 ${
+                        index < product.rating ? "text-yellow-400" : "text-gray-500"
+                      }`}
+                    />
+                  ))}
                 </span>
-                <button className="flex ml-auto items-center text-white bg-green-800 border-0 py-2 px-6 focus:outline-none hover:bg-green-500 rounded-3xl">
+              </div>
+              <div className="flex items-center py-2">
+              <button className="flex mr-auto items-center text-white bg-green-800 border-0 py-2 px-6 focus:outline-none hover:bg-green-500 rounded-3xl">
                   Buy Now
                 </button>
-                <button
-                  className="rounded-full w-12 h-12 bg-neutral-800 hover:bg-neutral-600 p-0 border-0 inline-flex items-center justify-center text-neutral-200 ml-4"
-                  onClick={() => handleAddToCart(product)}
-                >
-                  <IconShoppingCart stroke={2} />
-                </button>
-                <button
-                  className="rounded-full w-12 h-12 bg-neutral-800 hover:bg-neutral-600 p-0 border-0 inline-flex items-center justify-center text-neutral-200 ml-4"
-                  onClick={() => handleAddToWish(product)}
-                >
-                  <svg
-                    fill="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
+              <button
+                    className="rounded-full ml-auto w-12 h-12 bg-neutral-800 hover:bg-neutral-600 p-0 border-0 inline-flex items-center justify-center text-neutral-200 transition-transform duration-300 transform hover:scale-110"
+                    onClick={() => handleAddToCart(product)}
                   >
-                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
-                  </svg>
+                    <IconShoppingCart stroke={2} />
+                  </button>
+              <button
+                    className="rounded-full ml-2 w-12 h-12 bg-neutral-800 hover:bg-neutral-600 p-0 border-0 inline-flex items-center justify-center text-neutral-200 transition-transform duration-300 transform hover:scale-110"
+                    onClick={() => handleAddToWish(product)}
+                  >
+                    <IconHeart stroke={2} />
+                  </button>
+                  <button
+                    className="rounded-full ml-2 w-12 h-12 bg-neutral-800 hover:bg-neutral-600 p-0 border-0 inline-flex items-center justify-center text-neutral-200 transition-transform duration-300 transform hover:scale-110"
+                    onClick={() => setShowReviewForm(!showReviewForm)}
+                  >
+                    <IconMessage  stroke={2} />
+                  </button>
+              
+              <div className="relative">
+                <button
+                  className="rounded-full ml-2 w-12 h-12 bg-neutral-800 hover:bg-neutral-600 p-0 border-0 inline-flex items-center justify-center text-neutral-200 transition-transform duration-300 transform hover:scale-110"
+                  onClick={handleShare}
+                >
+                  <IconShare stroke={2} />
                 </button>
+                {showShareOptions && (
+                  <div className="absolute bg-white shadow-lg rounded-lg mt-2 p-2 flex flex-col space-y-2">
+                    <a
+                      href={`mailto:?subject=Check out this product&body=${shareText}`}
+                      className="flex items-center space-x-2 text-gray-800 hover:bg-gray-200 p-2 rounded-lg"
+                    >
+                      <IconMail stroke={2} />
+                      <span>Email</span>
+                    </a>
+                    <a
+                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center space-x-2 text-gray-800 hover:bg-gray-200 p-2 rounded-lg"
+                    >
+                      <IconBrandFacebook  stroke={2} />
+                      <span>Facebook</span>
+                    </a>
+                    <a
+                      href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center space-x-2 text-gray-800 hover:bg-gray-200 p-2 rounded-lg"
+                    >
+                      <IconBrandTwitter stroke={2} />
+                      <span>Twitter</span>
+                    </a>
+                    <a
+                      href={`https://wa.me/?text=${encodeURIComponent(shareText)}%20${encodeURIComponent(shareUrl)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center space-x-2 text-gray-800 hover:bg-gray-200 p-2 rounded-lg"
+                    >
+                      <IconBrandWhatsapp stroke={2} />
+                      <span>WhatsApp</span>
+                    </a>
+                    <button
+                      onClick={() => navigator.clipboard.writeText(shareUrl)}
+                      className="flex items-center space-x-2 text-gray-800 hover:bg-gray-200 p-2 rounded-lg"
+                    >
+                      <IconCopy stroke={2} />
+                      <span>Copy Link</span>
+                    </button>
+                  </div>
+                )}
+              </div>  
+              </div>
+              {showReviewForm && (
+                <div className="mt-4">
+                  <textarea
+                    className="w-full p-2 border border-gray-300 rounded-lg mb-2 text-neutral-950"
+                    placeholder="Write your review..."
+                    value={reviewText}
+                    onChange={(e) => setReviewText(e.target.value)}
+                  />
+                  <div className="flex items-center mb-2">
+                    {Array.from({ length: 5 }, (_, index) => (
+                      <button
+                        key={index}
+                        className={`p-2 ${index < reviewRating ? "text-yellow-400" : "text-gray-500"}`}
+                        onClick={() => setReviewRating(index + 1)}
+                      >
+                        <IconStar stroke={2} />
+                      </button>
+                    ))}
+                  </div>
+                  <button
+                    className="bg-neutral-800 hover:bg-neutral-600 p-3 rounded-3xl text-neutral-200"
+                    onClick={handleSubmitReview}
+                  >
+                    Submit Review
+                  </button>
+                </div>
+              )}
+              <div className="mt-6">
+                <h2 className="text-2xl font-bold text-white mb-4">Reviews</h2>
+                {reviews.length === 0 ? (
+                  <p className="text-gray-400">No reviews yet.</p>
+                ) : (
+                  reviews.map((review) => (
+                    <div key={review.id} className="mb-4 p-4 bg-gray-800 rounded-lg">
+                      <div className="flex items-center mb-2">
+                        <span className="text-white font-semibold mr-2">{review.userName}</span>
+                        <div className="flex items-center">
+                          {Array.from({ length: 5 }, (_, index) => (
+                            <IconStar
+                              key={index}
+                              stroke={2}
+                              className={`w-5 h-5 ${
+                                index < review.rating ? "text-yellow-400" : "text-gray-500"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-gray-300">{review.text}</p>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
             <img
-              alt={product.id}
+              alt={product.name}
               className="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded-3xl"
               src={product.image}
             />
           </div>
         </div>
       </section>
-
       <Footer />
     </>
   );
