@@ -6,7 +6,6 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/app/auth/firebase"; // Adjust the path as needed
 
 interface Review {
-  productId: string;
   rating: number;
   text: string;
   userId: string;
@@ -33,8 +32,8 @@ export function Reviews() {
   // Optionally, format reviews for display if needed
   const formattedReviews = reviews.map(review => ({
     quote: review.text,
-    name: `${review.productId}`,
-    title: review.userName
+    name: review.userName,
+    title: `Rating: ${review.rating}`
   }));
 
   return (
