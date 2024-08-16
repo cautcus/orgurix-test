@@ -99,6 +99,12 @@ const OrderPage = ({ onClose }: { onClose: () => void }) => {
           )}
         </div>
       </div>
+      <button
+        className="mt-4 text-sm text-blue-500 hover:underline"
+        onClick={onClose}
+      >
+        Close
+      </button>
       <Footer />
     </>
   );
