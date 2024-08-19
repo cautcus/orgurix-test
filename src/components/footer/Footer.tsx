@@ -12,10 +12,10 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-semibold mb-4 text-white">Company</h3>
             <ul>
-              <li><a href="/about" className="hover:text-white">About Us</a></li>
-              <li><a href="/team" className="hover:text-white">Our Team</a></li>
-              <li><a href="/careers" className="hover:text-white">Careers</a></li>
-              <li><a href="/contact" className="hover:text-white">Contact Us</a></li>
+              <li><a href="/company/about" className="hover:text-white">About Us</a></li>
+              <li><a href="/company/team" className="hover:text-white">Our Team</a></li>
+              <li><a href="/company/careers" className="hover:text-white">Careers</a></li>
+              <li><a href="/company/contact" className="hover:text-white">Contact Us</a></li>
             </ul>
           </div>
           <div>
@@ -30,10 +30,10 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-semibold mb-4 text-white">Support</h3>
             <ul>
-              <li><a href="/support" className="hover:text-white">Customer Support</a></li>
-              <li><a href="/terms" className="hover:text-white">Terms & Conditions</a></li>
-              <li><a href="/privacy" className="hover:text-white">Privacy Policy</a></li>
-              <li><a href="/help" className="hover:text-white">Help Center</a></li>
+              <li><a href="/support/customer" className="hover:text-white">Customer Support</a></li>
+              <li><a href="/support/terms" className="hover:text-white">Terms & Conditions</a></li>
+              <li><a href="/support/privacy" className="hover:text-white">Privacy Policy</a></li>
+              <li><a href="/support/help" className="hover:text-white">Help Center</a></li>
             </ul>
           </div>
           <div>

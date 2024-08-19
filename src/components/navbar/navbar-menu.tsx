@@ -19,9 +19,9 @@ export const MenuItem = ({
   item,
   children,
 }: {
-  setActive: (item: string) => void;
+  setActive: (item: any) => void;
   active: string | null;
-  item: string;
+  item: React.ReactNode;
   children?: React.ReactNode;
 }) => {
   return (
@@ -64,13 +64,13 @@ export const Menu = ({
   setActive,
   children,
 }: {
-  setActive: (item: string | null) => void;
+  setActive: (item: any | null) => void;
   children: React.ReactNode;
 }) => {
   return (
     <nav
       onMouseLeave={() => setActive(null)} // resets the state
-      className="relative  rounded-full boder border-transparent dark:border-white/[0.2] shadow-input flex justify-center space-x-4 px-8 py-6"
+      className="relative  rounded-full boder border-transparent dark:border-white/[0.2] shadow-input flex justify-center space-x-4 px-8 py-6 flex w-full items-center"
       style={{
         background:
           "linear-gradient(180deg, #1a3c40, #0d1f22)",

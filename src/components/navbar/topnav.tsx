@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/app/auth/firebase";
 import { signOut } from "firebase/auth";
+import { IconGardenCart , IconHome, IconUser, IconLogin  } from '@tabler/icons-react';
 
 export function Topnav() {
   return (
@@ -21,6 +22,7 @@ function Navbar({ className }: { className?: string }) {
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+
 
   const ADMIN_USER_ID = "IEtzL6BTfiMYtH5dOEr3son1Zrr2";
 
@@ -59,11 +61,17 @@ function Navbar({ className }: { className?: string }) {
           className
         )}
       >
-        <Menu setActive={setActive}>
-          <HoveredLink href="/">Home</HoveredLink>
-          <MenuItem setActive={setActive} active={active} item="Products">
-            <div className="  text-sm grid grid-cols-1 gap-10 p-4">
-              <ProductItem
+        <div className="flex items-center justify-between px-6 py-3 rounded-lg">
+          <Menu setActive={setActive} >
+            <div className="flex items-center justify-start w-1/3">
+              <a href="/" className="text-white font-semibold"><IconHome stroke={2} /></a>
+            </div>
+            <div className="flex items-center justify-center w-1/3 space-x-2">
+            <HoveredLink href="/">Men</HoveredLink>
+            <HoveredLink href="/">Women</HoveredLink>
+              <MenuItem setActive={setActive} active={active} item="Products">
+                <div className="text-sm grid grid-cols-1 gap-10 p-4">
+                <ProductItem
                 title="Algochurn"
                 href="https://algochurn.com"
                 src="https://assets.aceternity.com/demos/algochurn.webp"
@@ -87,41 +95,49 @@ function Navbar({ className }: { className?: string }) {
                 src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png"
                 description="Respond to government RFPs, RFIs and RFQs 10x faster using AI"
               />
+                </div>
+              </MenuItem>
             </div>
-          </MenuItem>
-          <HoveredLink href="/about">About</HoveredLink>
-          <h1 className="text-neutral-200 hover:text-neutral-400">|</h1>
-          {user ? (
-            <>
-              <div className="space-x-4">
-                <MenuItem setActive={setActive} active={active} item="Profile">
-                  <div className="text-sm grid grid-cols-1 gap-6 p-4">
-                    <HoveredLink
-                      className="text-neutral-200 hover:text-neutral-400"
-                      href="/dashboard"
-                    >
-                      {user.displayName || "Dashboard"}
-                    </HoveredLink>
-                    {isAdmin ? (
-                      <>
-                        <HoveredLink href="/admin">Admin</HoveredLink>
-                      </>
-                    ) : null}
-                    <HoveredLink
-                      href="#"
-                      className="text-neutral-200 hover:text-neutral-400 pointer"
-                    >
-                      <button onClick={handleLogout}>Logout</button>
-                    </HoveredLink>
-                  </div>
-                </MenuItem>
+            <div className="flex items-center justify-end w-1/3 space-x-4">
+              {user ? (
+                <>
+             <div className="relative group">
+              <IconUser className="text-white text-2xl cursor-pointer" />
+              <div className=" absolute right-0 top-full mt-2 bg-black p-6 opacity-0 group-hover:opacity-100 bg-white dark:bg-black backdrop-blur-sm rounded-2xl overflow-hidden border border-black/[0.2] dark:border-white/[0.2] shadow-xl">
+                <a
+                  href="/dashboard"
+                  className="block text-white hover:text-gray-400 mt-4 mb-6 mx-2"
+                >
+                  {user.displayName || "Dashboard"}
+                </a>
+                <a
+                  href="/company/careers"
+                  className="block text-yellow-400 hover:text-yellow-600 mt-4 mb-6 mx-2"
+                >
+                  Become A Seller
+                </a>
+                {isAdmin && (
+                  <a href="/admin" className="block text-white hover:text-gray-400 my-6 mx-2">
+                    Admin
+                  </a>
+                )}
+                <a
+                  href="#"
+                  className="block text-white hover:text-gray-400 my-6  mx-2"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </a>
               </div>
-              <HoveredLink href="/cart">Cart</HoveredLink>
-            </>
-          ) : (
-            <HoveredLink href="/auth">Login</HoveredLink>
-          )}
-        </Menu>
+            </div>
+                  <HoveredLink href="/cart"><IconGardenCart /></HoveredLink>
+                </>
+              ) : (
+                <HoveredLink href="/auth"><IconLogin/></HoveredLink>
+              )}
+            </div>
+          </Menu>
+        </div>
       </div>
       {showAlert && (
         <div
@@ -146,5 +162,5 @@ function Navbar({ className }: { className?: string }) {
         </div>
       )}
     </>
-  );
+);
 }

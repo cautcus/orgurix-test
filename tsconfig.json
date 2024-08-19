@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/team/cards.jsx", "src/app/not-found.jsx", "src/app/auth/api/firebase.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/company/team/cards.jsx", "src/app/not-found.jsx", "src/app/auth/api/firebase.js"],
   "exclude": ["node_modules"]
 }
