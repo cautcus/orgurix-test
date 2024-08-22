@@ -22,7 +22,6 @@ import MyAccount from "./my-account";
 import SupportHelp from "./supportHelp";
 import Wishlist from "../wishlist/wishlist";
 import SavedAddress from "./addresses"
-import OrderPage from "../order/page";
 import Orders from "./orders";
 
 export function DGrid() {
