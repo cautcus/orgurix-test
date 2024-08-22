@@ -9,23 +9,21 @@ import {
   IconHelp,
   IconLogout,
   IconMapPin,
+  IconCodePlus,
 } from "@tabler/icons-react";
 import { Label } from "@/components/login/label";
 import { Input } from "@/components/login/input";
 import { cn } from "@/lib/utils";
 import { signOut } from "firebase/auth";
-import {
-  auth,
-  sendPasswordResetEmail,
-} from "@/app/auth/firebase";
-import MyAccount from "./my-account";
-import SupportHelp from "./supportHelp";
+import { auth, sendPasswordResetEmail } from "@/app/auth/firebase";
+import MyAccount from "../dashboard/my-account";
+import SupportHelp from "../dashboard/supportHelp";
 import Wishlist from "../wishlist/wishlist";
-import SavedAddress from "./addresses"
-import OrderPage from "../order/page";
-import Orders from "./orders";
+import SavedAddress from "../dashboard/addresses";
+import Orders from "../dashboard/orders";
+import AddProduct from "./productdb";
 
-export function DGrid() {
+export function AGrid() {
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [showResetModal, setShowResetModal] = useState<boolean>(false);
@@ -36,6 +34,7 @@ export function DGrid() {
   const [showWishlist, setShowWishlist] = useState<boolean>(false);
   const [showAddress, setShowAddress] = useState<boolean>(false);
   const [showOrder, setShowOrder] = useState<boolean>(false);
+  const [showProduct, setShowProduct] = useState<boolean>(false);
 
   const handlePasswordReset = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -87,15 +86,16 @@ export function DGrid() {
         </div>
       )}
       <BentoGrid className="mt-12 max-w-4xl mx-auto max-h-2xl cursor-pointer ">
-      <a className="md:col-span-2" onClick={() => setShowMyAccount(true)}>
-        <BentoGridItem className="text-teal-500"
-          title="My Account"
-          description="View and update your personal information and manage your account settings."
-          icon={<IconUsers className="h-4 w-4 text-teal-500" />}
-        />
+        <a className="md:col-span-2" onClick={() => setShowMyAccount(true)}>
+          <BentoGridItem
+            className="text-teal-500"
+            title="My Account"
+            description="View and update your personal information and manage your account settings."
+            icon={<IconUsers className="h-4 w-4 text-teal-500" />}
+          />
         </a>
         <a onClick={() => setShowResetModal(true)}>
-          <BentoGridItem 
+          <BentoGridItem
             className="md:col-span-2 text-cyan-500 items-left cursor-pointer"
             title="Password Reset"
             description="Reset it here to regain access to your account."
@@ -103,31 +103,54 @@ export function DGrid() {
           />
         </a>
         <a onClick={() => setShowWishlist(true)}>
-        <BentoGridItem className="text-purple-500"
-          title="Wishlist"
-          description="Save your favorite items and track of products."
-          icon={<IconList className="h-4 w-4 text-purple-500" />}
-        /></a>
-        <a className="md:col-span-2 text-pink-500" onClick={() => setShowAddress(true)}>
-        <BentoGridItem 
-          title="Saved Addresses"
-          description="Manage your saved addresses for faster checkout and delivery."
-          icon={<IconMapPin className="h-4 w-4 text-pink-500" />}
-        /></a>
-        <a className="md:col-span-3 text-yellow-500" onClick={() => setShowOrder(true)}>
-        <BentoGridItem 
-          title="Your Order"
-          description="Review your order history and track the status of your current orders."
-          icon={<IconTruckDelivery className="h-4 w-4 text-yellow-500" />}
-        /></a>
+          <BentoGridItem
+            className="text-purple-500"
+            title="Wishlist"
+            description="Save your favorite items and track of products."
+            icon={<IconList className="h-4 w-4 text-purple-500" />}
+          />
+        </a>
+        <a
+          className="md:col-span-1 text-pink-500"
+          onClick={() => setShowAddress(true)}
+        >
+          <BentoGridItem
+            title="Saved Addresses"
+            description="Manage your saved addresses."
+            icon={<IconMapPin className="h-4 w-4 text-pink-500" />}
+          />
+        </a>
+        <a
+          className="md:col-span-1 text-orange-500"
+          onClick={() => setShowProduct(true)}
+        >
+          <BentoGridItem
+            title="Add Product"
+            description="Add a new product to the store."
+            icon={<IconCodePlus className="h-4 w-4 text-orange-500" />}
+          />
+        </a>
+        <a
+          className="md:col-span-3 text-yellow-500"
+          onClick={() => setShowOrder(true)}
+        >
+          <BentoGridItem
+            title="Your Order"
+            description="Review your order history and track the status of your current orders."
+            icon={<IconTruckDelivery className="h-4 w-4 text-yellow-500" />}
+          />
+        </a>
         <a className="md:col-span-2" onClick={() => setShowSupportHelp(true)}>
-        <BentoGridItem className="text-white"
-          title="Support/Help"
-          description="Need assistance? Contact our support team for help with your orders and account."
-          icon={<IconHelp className="h-4 w-4 text-white" />}
-        /></a>
+          <BentoGridItem
+            className="text-white"
+            title="Support/Help"
+            description="Need assistance? Contact our support team for help with your orders and account."
+            icon={<IconHelp className="h-4 w-4 text-white" />}
+          />
+        </a>
         <a onClick={handleLogout}>
-          <BentoGridItem className="text-red-500"
+          <BentoGridItem
+            className="text-red-500"
             title="Logout"
             description="Sign out of your account securely."
             icon={<IconLogout className="h-4 w-4 text-red-500" />}
@@ -138,7 +161,9 @@ export function DGrid() {
       {showResetModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-black p-4 rounded-md shadow-md w-96">
-            <h3 className="text-lg font-bold mb-4 text-white">Reset Password</h3>
+            <h3 className="text-lg font-bold mb-4 text-white">
+              Reset Password
+            </h3>
             <form onSubmit={handlePasswordReset}>
               <LabelInputContainer className="mb-4">
                 <Label htmlFor="resetEmail">Email Address</Label>
@@ -167,12 +192,14 @@ export function DGrid() {
         </div>
       )}
 
-      {showSupportHelp && <SupportHelp onClose={() => setShowSupportHelp(false)} />}
+      {showSupportHelp && (
+        <SupportHelp onClose={() => setShowSupportHelp(false)} />
+      )}
       {showMyAccount && <MyAccount onClose={() => setShowMyAccount(false)} />}
       {showWishlist && <Wishlist onClose={() => setShowWishlist(false)} />}
       {showAddress && <SavedAddress onClose={() => setShowAddress(false)} />}
       {showOrder && <Orders onClose={() => setShowOrder(false)} />}
-
+      {showProduct && <AddProduct onClose={() => setShowProduct(false)} />}
     </>
   );
 }

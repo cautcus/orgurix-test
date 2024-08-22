@@ -121,8 +121,8 @@ function Navbar({ className }: { className?: string }) {
             <div className="text-sm grid grid-cols-1 gap-6 p-4">
             {isAdmin ? (<>
             <HoveredLink href="/admin">Admin</HoveredLink>
-          </>) : null }
-          <HoveredLink className="text-neutral-200 hover:text-neutral-400" href="/dashboard">{user.displayName || "Dashboard"}</HoveredLink>
+          </>) :  
+          <HoveredLink className="text-neutral-200 hover:text-neutral-400" href="/dashboard">{user.displayName || "Dashboard"}</HoveredLink>}
           <a className="text-yellow-400 hover:text-yellow-600" href="/company/careers">Become A Seller</a>
             <HoveredLink href="#" className="text-neutral-200 hover:text-neutral-400 pointer">
             <button onClick={handleLogout}>Logout</button></HoveredLink>

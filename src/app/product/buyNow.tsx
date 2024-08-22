@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { db } from '@/app/auth/firebase';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { db, auth } from '@/app/auth/firebase'; // Ensure your Firebase imports are correct
+import { collection, getDocs, addDoc, query, orderBy } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 
 interface BuyNowFormProps {
   product: any;
@@ -20,6 +21,7 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ product, onClose }) => {
   const [allAddresses, setAllAddresses] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [shareUrl, setShareUrl] = useState('');
+  const [currentUser, setCurrentUser] = useState<any>(null); // State for current user
   const buyText = `Hey I want to buy: ${product?.name}`;
 
   useEffect(() => {
@@ -43,6 +45,14 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ product, onClose }) => {
     };
 
     fetchAddresses();
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,9 +84,15 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ product, onClose }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!currentUser) {
+      alert('User is not authenticated.');
+      return;
+    }
+
     try {
       await addDoc(collection(db, 'orders'), {
         ...formData,
+        userId: currentUser.uid,
         productId: product.id,
         productName: product.name,
         productColor: product.color,
@@ -88,6 +104,7 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ product, onClose }) => {
         productRating: product.rating,
         productSize: product.size,
         orderDate: new Date(),
+        status: 'Pending',
       });
 
       // Redirect to WhatsApp after successful submission

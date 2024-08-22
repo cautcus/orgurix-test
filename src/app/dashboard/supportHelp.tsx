@@ -1,24 +1,52 @@
-// components/support/support-help.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Label } from "@/components/login/label";
 import { Input } from "@/components/login/input";
-import { cn } from "@/lib/utils";
+import { db, auth } from "@/app/auth/firebase"; // Adjust path as necessary
+import { collection, addDoc } from "firebase/firestore";
+import { onAuthStateChanged, User } from "firebase/auth";
 
 const SupportHelp = ({ onClose }: { onClose: () => void }) => {
   const [issue, setIssue] = useState<string>("");
+  const [user, setUser] = useState<User | null>(null);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic (e.g., send issue to support team)
-    console.log("Issue submitted:", issue);
-    setIssue("");
-    onClose();
+
+    if (!user) {
+      console.error("No user logged in.");
+      return;
+    }
+
+    try {
+      // Add the issue to Firestore with user details
+      await addDoc(collection(db, "supportIssues"), {
+        userId: user.uid,
+        name: user.displayName || "Anonymous", // Use display name or "Anonymous"
+        email: user.email || "No email provided",
+        issue: issue,
+        timestamp: new Date(),
+      });
+
+      console.log("Issue submitted:", issue);
+      setIssue(""); // Clear the input field
+      onClose();    // Close the support form
+    } catch (error) {
+      console.error("Error submitting issue:", error);
+    }
   };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-black p-4 rounded-md shadow-md w-96">
-            <h3 className="text-lg font-bold mb-4 text-white">Reset Password</h3>
+      <div className="bg-black p-4 rounded-md shadow-md w-96">
+        <h3 className="text-lg font-bold mb-4 text-white">Report an Issue</h3>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <Label htmlFor="issue">Describe your issue</Label>
@@ -38,11 +66,12 @@ const SupportHelp = ({ onClose }: { onClose: () => void }) => {
             Submit
           </button>
           <button
-  className="mt-4 text-sm text-blue-500 hover:underline"
-  onClick={onClose}
->
-  Close
-</button>
+            className="mt-4 text-sm text-blue-500 hover:underline"
+            onClick={onClose}
+            type="button"
+          >
+            Close
+          </button>
         </form>
       </div>
     </div>

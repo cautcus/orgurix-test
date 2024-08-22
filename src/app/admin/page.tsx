@@ -3,14 +3,15 @@
 import React, { useEffect, useState } from "react";
 import { auth } from "@/app/auth/firebase"; // Adjust import path as necessary
 import { onAuthStateChanged, User } from "firebase/auth";
-import AddProduct from "./productdb";
 import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
-import SpinnerLoader from '@/components/ui/loader';
-import GoogleAnalytics from '@/components/GoogleAnalytics';
+import SpinnerLoader from "@/components/ui/loader";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { AGrid } from "./a-grid";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 
 // List of admin user IDs
-const ADMIN_USER_IDS = ["IEtzL6BTfiMYtH5dOEr3son1Zrr2"]; 
+const ADMIN_USER_IDS = ["IEtzL6BTfiMYtH5dOEr3son1Zrr2"];
 
 const AdminPage = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -57,8 +58,16 @@ const AdminPage = () => {
     <div className="text-white">
       <GoogleAnalytics />
       <Topnav />
-      <div className="pt-24" />
-      <AddProduct />
+      <div className="pt-20" />
+      {user && (
+        <div className="max-w-7xl text-center mx-auto text-xl md:text-5xl font-bold text-green-300 font-sans pt-20">
+          <TextGenerateEffect
+            words={`Welcome ${user.displayName || "Admin"}, To The Admin Page`}
+          />
+        </div>
+      )}
+      <AGrid />
+      <div className="pb-20" />
       <Footer />
     </div>
   );

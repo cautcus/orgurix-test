@@ -29,6 +29,7 @@ export const Hero = ({
       }
     );
   }, [scope.current]);
+  
 
   const renderWords = () => {
     return (

@@ -7,6 +7,7 @@ import { IconShoppingCart, IconShare, IconCopy, IconBrandFacebook , IconBrandTwi
 import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+import BuyNowForm from "../buyNow" ;
 import SpinnerLoader from '@/components/ui/loader';
 
 interface Product {
@@ -39,8 +40,9 @@ const ProductOverviewPage = () => {
   const [showReviewForm, setShowReviewForm] = useState<boolean>(false);
   const [reviewText, setReviewText] = useState<string>("");
   const [reviewRating, setReviewRating] = useState<number>(1);
-  const productId = "product-id-2";
   const [shareUrl, setShareUrl] = useState('');
+  const [showBuy, setShowBuy] = useState<boolean>(false);
+  const productId = "product-id-2";
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -188,7 +190,7 @@ const ProductOverviewPage = () => {
   };
 
   const shareText = `Check out this product: ${product?.name}`;
-  const buyText = `Hey I want to buy: ${product?.name}`;
+
 
   if (loading) {
     return <SpinnerLoader />;
@@ -252,11 +254,12 @@ const ProductOverviewPage = () => {
                 </span>
               </div>
               <div className="flex items-center py-2">
-              <button className="flex mr-auto items-center text-white bg-green-800 border-0 py-2 px-6 focus:outline-none hover:bg-green-500 rounded-3xl">
-                 <a href={`https://wa.me/918981918040/?text=${encodeURIComponent(
+              <button className="flex mr-auto items-center text-white bg-green-800 border-0 py-2 px-6 focus:outline-none hover:bg-green-500 rounded-3xl" onClick={() => setShowBuy(true)}>
+                 {/* <a href={`https://wa.me/918981918040/?text=${encodeURIComponent(
                           buyText
                         )}%20,from ${encodeURIComponent(shareUrl)}`}
-                        target="_blank">Buy Now</a>
+                        target="_blank">Buy Now</a> */}
+                        Buy Now
                 </button>
               <button
                     className="rounded-full ml-auto w-12 h-12 bg-neutral-800 hover:bg-neutral-600 p-0 border-0 inline-flex items-center justify-center text-neutral-200 transition-transform duration-300 transform hover:scale-110"
@@ -394,6 +397,7 @@ const ProductOverviewPage = () => {
         </div>
       </section>
       <Footer />
+      {showBuy && <BuyNowForm onClose={() => setShowBuy(false)} product={product} />}
     </>
   );
 };
