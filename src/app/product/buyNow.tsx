@@ -14,6 +14,7 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ product, onClose }) => {
     email: '',
     phone: '',
     quantity: 1,
+    giftWrap: false,  // New field for gift wrap option
   });
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [allAddresses, setAllAddresses] = useState<any[]>([]);
@@ -32,7 +33,7 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ product, onClose }) => {
       setLoading(true);
       try {
         const querySnapshot = await getDocs(collection(db, 'addresses'));
-        const addressList = querySnapshot.docs.map(doc => doc.data());
+        const addressList = querySnapshot.docs.map((doc) => doc.data());
         setAllAddresses(addressList);
         setSuggestions([]);
       } catch (error) {
@@ -45,18 +46,21 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ product, onClose }) => {
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,  // Handle checkbox input
     });
 
     if (name === 'address') {
       const filteredSuggestions = allAddresses
-        .map((address: any) =>
-          `${address.street}, ${address.city}, ${address.state}, ${address.zip}`
+        .map(
+          (address: any) =>
+            `${address.street}, ${address.city}, ${address.state}, ${address.zip}`
         )
-        .filter(address => address.toLowerCase().includes(value.toLowerCase()));
+        .filter((address) =>
+          address.toLowerCase().includes(value.toLowerCase())
+        );
 
       setSuggestions(filteredSuggestions);
     }
@@ -90,7 +94,6 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ product, onClose }) => {
       window.location.href = `https://wa.me/918981918040/?text=${encodeURIComponent(
         buyText
       )}%20,from ${encodeURIComponent(shareUrl)}`;
-
     } catch (error) {
       console.error('Error placing order:', error);
       alert('Failed to place order. Please try again.');
@@ -169,6 +172,16 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ product, onClose }) => {
             className="w-full p-2 mb-4 border rounded text-black"
             required
           />
+          <label className="block mb-2 flex items-center">
+            <input
+              type="checkbox"
+              name="giftWrap"
+              checked={formData.giftWrap}
+              onChange={handleChange}
+              className="mr-2"
+            />
+            Add Gift Wrap (₹50)
+          </label>
           <button
             type="submit"
             className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
