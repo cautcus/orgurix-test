@@ -5,7 +5,8 @@ import { cn } from "@/lib/utils";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "@/app/auth/firebase";
 import { signOut } from "firebase/auth";
-import { IconGardenCart , IconHome, IconUser, IconLogin, IconShoppingBag  } from '@tabler/icons-react';
+import Image from "next/image";
+import { IconUser, IconLogin, IconShoppingBag  } from '@tabler/icons-react';
 
 export function Topnav() {
   return (
@@ -63,7 +64,7 @@ function Navbar({ className }: { className?: string }) {
         <div className="flex items-center justify-between px-6 py-3 rounded-lg">
           <Menu setActive={setActive} >
             <div className="flex items-center justify-start w-1/3">
-              <a href="/" className="text-white font-semibold"><img className="w-8 h-8" src="/img/icon.png"/></a>
+              <a href="/" className="text-white font-semibold"><Image width={60} height={60} src="/img/icon.png" alt={""}/></a>
             </div>
             <div className="flex items-center justify-center w-1/3 space-x-2">
             <HoveredLink href="/">Men</HoveredLink>
