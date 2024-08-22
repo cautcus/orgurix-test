@@ -100,12 +100,11 @@ function Navbar({ className }: { className?: string }) {
               <a href="/" className="text-white font-semibold"><Image width={60} height={60} src="/img/icon.png" alt={""}/></a>
             </div>
             <div className="flex items-center justify-center w-1/3 space-x-2">
-            <HoveredLink href="/">Men</HoveredLink>
-            <HoveredLink href="/">Women</HoveredLink>
               <MenuItem setActive={setActive} active={active} item={"Product"} id={"product"}>
                 <div className="text-sm grid grid-cols-1 gap-10 p-4">
                 {products.map((product) => (
                 <ProductItem
+                key={product.id}
                 title={product.name}
                 href={product.goto}
                 src={product.image}
