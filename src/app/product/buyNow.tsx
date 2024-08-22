@@ -18,6 +18,14 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ product, onClose }) => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [allAddresses, setAllAddresses] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [shareUrl, setShareUrl] = useState('');
+  const buyText = `Hey I want to buy: ${product?.name}`;
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setShareUrl(window.location.href);
+    }
+  }, []);
 
   useEffect(() => {
     const fetchAddresses = async () => {
@@ -25,7 +33,6 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ product, onClose }) => {
       try {
         const querySnapshot = await getDocs(collection(db, 'addresses'));
         const addressList = querySnapshot.docs.map(doc => doc.data());
-        console.log("Fetched Addresses:", addressList); // Debugging line
         setAllAddresses(addressList);
         setSuggestions([]);
       } catch (error) {
@@ -51,7 +58,6 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ product, onClose }) => {
         )
         .filter(address => address.toLowerCase().includes(value.toLowerCase()));
 
-      console.log("Filtered Suggestions:", filteredSuggestions); // Debugging line
       setSuggestions(filteredSuggestions);
     }
   };
@@ -79,8 +85,12 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ product, onClose }) => {
         productSize: product.size,
         orderDate: new Date(),
       });
-      alert('Order placed successfully!');
-      onClose();
+
+      // Redirect to WhatsApp after successful submission
+      window.location.href = `https://wa.me/918981918040/?text=${encodeURIComponent(
+        buyText
+      )}%20,from ${encodeURIComponent(shareUrl)}`;
+
     } catch (error) {
       console.error('Error placing order:', error);
       alert('Failed to place order. Please try again.');
@@ -162,6 +172,7 @@ const BuyNowForm: React.FC<BuyNowFormProps> = ({ product, onClose }) => {
           <button
             type="submit"
             className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            disabled={loading}
           >
             Place Order
           </button>

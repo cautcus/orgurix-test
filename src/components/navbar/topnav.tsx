@@ -63,7 +63,7 @@ function Navbar({ className }: { className?: string }) {
         <div className="flex items-center justify-between px-6 py-3 rounded-lg">
           <Menu setActive={setActive} >
             <div className="flex items-center justify-start w-1/3">
-              <a href="/" className="text-white font-semibold"><img className="w-8 h-8" src="/img/logo.png"/></a>
+              <a href="/" className="text-white font-semibold"><img className="w-8 h-8" src="/img/icon.png"/></a>
             </div>
             <div className="flex items-center justify-center w-1/3 space-x-2">
             <HoveredLink href="/">Men</HoveredLink>
