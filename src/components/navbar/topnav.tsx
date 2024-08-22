@@ -3,10 +3,21 @@ import React, { useState, useEffect } from "react";
 import { HoveredLink, Menu, MenuItem, ProductItem } from "./navbar-menu";
 import { cn } from "@/lib/utils";
 import { onAuthStateChanged, User } from "firebase/auth";
-import { auth } from "@/app/auth/firebase";
+import { db, auth } from "@/app/auth/firebase";
+import { collection, getDocs, doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import Image from "next/image";
 import { IconUser, IconLogin, IconShoppingBag  } from '@tabler/icons-react';
+
+interface Product {
+  id: string;
+  name: string;
+  image: string;
+  price: number;
+  goto: string;
+  description: string;
+}
+
 
 export function Topnav() {
   return (
@@ -22,9 +33,31 @@ function Navbar({ className }: { className?: string }) {
   const [active, setActive] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   const ADMIN_USER_ID = "IEtzL6BTfiMYtH5dOEr3son1Zrr2";
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const productsCollection = collection(db, "products");
+        const productsSnapshot = await getDocs(productsCollection);
+        const productsList: Product[] = productsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...(doc.data() as Omit<Product, 'id'>), // Assuming all fields in Product are present except 'id'
+        }));
+
+        setProducts(productsList);
+      } catch (error) {
+        console.error("Error fetching products: ", error);
+        setAlertMessage("Error fetching products.");
+        setShowAlert(true);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -71,30 +104,13 @@ function Navbar({ className }: { className?: string }) {
             <HoveredLink href="/">Women</HoveredLink>
               <MenuItem setActive={setActive} active={active} item={"Product"} id={"product"}>
                 <div className="text-sm grid grid-cols-1 gap-10 p-4">
+                {products.map((product) => (
                 <ProductItem
-                title="Algochurn"
-                href="https://algochurn.com"
-                src="https://assets.aceternity.com/demos/algochurn.webp"
-                description="Prepare for tech interviews like never before."
-              />
-              <ProductItem
-                title="Tailwind Master Kit"
-                href="https://tailwindmasterkit.com"
-                src="https://assets.aceternity.com/demos/tailwindmasterkit.webp"
-                description="Production ready Tailwind css components for your next project"
-              />
-              <ProductItem
-                title="Moonbeam"
-                href="https://gomoonbeam.com"
-                src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.51.31%E2%80%AFPM.png"
-                description="Never write from scratch again. Go from idea to blog in minutes."
-              />
-              <ProductItem
-                title="Rogue"
-                href="https://userogue.com"
-                src="https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png"
-                description="Respond to government RFPs, RFIs and RFQs 10x faster using AI"
-              />
+                title={product.name}
+                href={product.goto}
+                src={product.image}
+                description={product.description}
+              /> ))}
                 </div>
               </MenuItem>
             </div>

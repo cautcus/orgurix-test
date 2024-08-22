@@ -13,7 +13,7 @@ interface Product {
   image: string;
   price: number;
   originalPrice: number;
-  goto: string; // URL or path to navigate
+  goto: string;
   color: string;
   size: string;
   rating: number;
