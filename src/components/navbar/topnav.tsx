@@ -36,7 +36,7 @@ function Navbar({ className }: { className?: string }) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const ADMIN_USER_ID = "IEtzL6BTfiMYtH5dOEr3son1Zrr2";
+  const ADMIN_USER_IDS = ["IEtzL6BTfiMYtH5dOEr3son1Zrr2"];
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -64,7 +64,7 @@ function Navbar({ className }: { className?: string }) {
       setUser(user);
       if (currentUser) {
         setUser(currentUser);
-        setIsAdmin(currentUser.uid === ADMIN_USER_ID);
+        setIsAdmin(ADMIN_USER_IDS.includes(currentUser.uid));
       } else {
         setUser(null);
         setIsAdmin(false);

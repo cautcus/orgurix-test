@@ -9,10 +9,11 @@ import Footer from "@/components/footer/Footer";
 import SpinnerLoader from '@/components/ui/loader';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 
-const ADMIN_USER_ID = "IEtzL6BTfiMYtH5dOEr3son1Zrr2"; 
+// List of admin user IDs
+const ADMIN_USER_IDS = ["IEtzL6BTfiMYtH5dOEr3son1Zrr2"]; 
 
 const AdminPage = () => {
-    const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -20,7 +21,7 @@ const AdminPage = () => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        setIsAdmin(currentUser.uid === ADMIN_USER_ID);
+        setIsAdmin(ADMIN_USER_IDS.includes(currentUser.uid));
       } else {
         setUser(null);
         setIsAdmin(false);
@@ -40,7 +41,7 @@ const AdminPage = () => {
   }, [loading, isAdmin]);
 
   if (loading) {
-    return  <SpinnerLoader />;
+    return <SpinnerLoader />;
   }
 
   if (!isAdmin) {
@@ -54,11 +55,11 @@ const AdminPage = () => {
 
   return (
     <div className="text-white">
-          <GoogleAnalytics/>
+      <GoogleAnalytics />
       <Topnav />
-      <div className="pt-24"/>
-      <AddProduct/>
-      <Footer/>
+      <div className="pt-24" />
+      <AddProduct />
+      <Footer />
     </div>
   );
 };
