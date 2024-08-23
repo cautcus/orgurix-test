@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Topnav } from "@/components/navbar/topnav";
-import Coming from "@/components/waitlist/coming";
 import { TextGenerateEffect } from "../components/ui/text-generate-effect";
 import Grid from "@/components/grid/grid";
 import { Feature } from "@/components/h-grid/feature";
@@ -33,22 +32,24 @@ export default function Home() {
   return (
     <>
     <GoogleAnalytics/>
-      <Topnav />
-      <Slider/>
+    <Topnav />
+    <Slider/>
     <AppleCardsCarouselDemo/>
-      {/* <Coming/>  */}
-      <div>
+    <div className="mx-auto max-w-xl text-center pt-20">
+          <TextGenerateEffect words="Introducing Our Premier Line of Organic Essentials"/>
+    </div>
+    <CardA/>  
+    <Reviews/>
+    <Footer/>
+
+    {/* Grid Components */}
+      {/* <div>
         <div className="mx-auto max-w-xl text-center px-4 pb-12">
           <TextGenerateEffect words="Introducing Our Premier Line of Organic Essentials"/>
         </div>
         <Grid />
-      </div>
-      <div className="p-6" />
-      <Feature />
-      <CardA/>
-      <Reviews/>
-      <div className="p-6" />
-      <Footer/>
+        </div> 
+      <Feature />*/}
     </>
   );
 }

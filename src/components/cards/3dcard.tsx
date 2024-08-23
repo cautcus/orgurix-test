@@ -77,7 +77,7 @@ export function CardA() {
   };
 
   return (
-    <section className="py-16">
+    <section>
       <GoogleAnalytics />
       <div className="max-w-screen-xl mx-auto px-4 md:px-8">
         {showAlert && (
@@ -102,7 +102,7 @@ export function CardA() {
             </span>
           </div>
         )}
-        <div className="mt-16 grid gap-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-52">
+        <div className="grid gap-12 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-52">
           {products.map((product) => (
             <CardContainer key={product.id} className="inter-var">
               <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border">
