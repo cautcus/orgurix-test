@@ -9,6 +9,7 @@ import SpinnerLoader from "@/components/ui/loader";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { AGrid } from "./a-grid";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import Script from "next/script";
 
 // List of admin user IDs
 const ADMIN_USER_IDS = ["IEtzL6BTfiMYtH5dOEr3son1Zrr2"];
@@ -56,6 +57,25 @@ const AdminPage = () => {
 
   return (
     <div className="text-white">
+       <div>
+      <Script
+        id="tawk-to-script"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+            (function(){
+              var s=document.createElement("script");
+              s.src='https://embed.tawk.to/66c9e94350c10f7a009fffd6/1i62bec3o'; // Replace with your Tawk.to ID
+              s.async=true;
+              s.charset='UTF-8';
+              s.crossOrigin='*';
+              document.head.appendChild(s);
+            })();
+          `,
+        }}
+      />
+    </div>
       <GoogleAnalytics />
       <Topnav />
       <div className="pt-20" />
