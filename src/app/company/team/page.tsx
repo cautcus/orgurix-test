@@ -6,6 +6,7 @@ import Heading from "./heading";
 import Team from "./cards";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import SpinnerLoader from "@/components/ui/loader";
+import Footer from "@/components/footer/Footer";
 
 export default function TeamPage() {
   const [loading, setLoading] = useState(true);
@@ -28,6 +29,7 @@ export default function TeamPage() {
       <Topnav />
       <Heading />
       <Team />
+      <Footer />
     </div>
   );
 }

@@ -1,10 +1,11 @@
 "use client";
 
-import React, {useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import SpinnerLoader from '@/components/ui/loader';
+import { FaWhatsapp } from 'react-icons/fa'; // Import the WhatsApp icon
 
 const HelpCenterPage = () => {
   const [loading, setLoading] = useState(true);
@@ -23,7 +24,7 @@ const HelpCenterPage = () => {
 
   return (
     <div className="text-white min-h-screen flex flex-col justify-between bg-neutral-900">
-          <GoogleAnalytics/>
+      <GoogleAnalytics />
       <Topnav />
       <main className="flex-grow">
         <section className="py-16 px-4 md:px-8">
@@ -33,6 +34,7 @@ const HelpCenterPage = () => {
               Welcome to the OrguriX Help Center. Here, you'll find answers to common questions, guidance on our products and services, and support resources to ensure your shopping experience is smooth and enjoyable.
             </p>
 
+            {/* FAQ Section */}
             <h2 className="text-3xl font-bold mb-6 text-green-200">Frequently Asked Questions</h2>
             <div className="space-y-6">
               <div>
@@ -44,7 +46,7 @@ const HelpCenterPage = () => {
               <div>
                 <h3 className="text-2xl font-bold text-green-200">What is your return policy?</h3>
                 <p className="text-lg text-neutral-200">
-                  We offer a 30-day return policy on most items. If you're not satisfied with your purchase, you can return it within 30 days of delivery for a full refund. Please visit our Returns & Exchanges page for more details.
+                  We offer a 7-day return policy on most items. If you're not satisfied with your purchase, you can return it within 7 days of delivery for a full refund. Please visit our <a className='text-green-500 hover:text-green-200' href="exchange">Returns & Exchanges</a> page for more details.
                 </p>
               </div>
               <div>
@@ -62,6 +64,7 @@ const HelpCenterPage = () => {
               </div>
             </div>
 
+            {/* Support Resources Section */}
             <h2 className="text-3xl font-bold mt-12 mb-6 text-green-200">Support Resources</h2>
             <div className="space-y-6">
               <div>
@@ -82,6 +85,19 @@ const HelpCenterPage = () => {
                   Experiencing technical issues with our website? Please reach out to our technical support team for help with navigating the site, making purchases, or any other technical concerns.
                 </p>
               </div>
+            </div>
+
+            {/* WhatsApp Button */}
+            <div className="fixed bottom-4 right-4">
+              <a
+                href="https://wa.me/918981918040" // Replace with your WhatsApp number
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 rounded-full shadow-lg"
+              >
+                <FaWhatsapp className="mr-2" size={24} />
+                Connect on WhatsApp
+              </a>
             </div>
           </div>
         </section>

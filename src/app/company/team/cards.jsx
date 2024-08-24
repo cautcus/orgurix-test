@@ -65,6 +65,12 @@ const teamMembers = [
     title: "Co-Founder & COO",
     linkedin: "https://www.linkedin.com/in/shreyas-das-00a273321/",
     image:'/img/shreyas-dp.jpg',
+  },
+  {
+    initials: "DS",
+    name: "Debarati Saha",
+    title: "CMO",
+    image:'/img/debarati-dp.jpg',
   }
 ];
 
@@ -88,5 +94,6 @@ export default function Team() {
         </div>
       </div>
     </section>
+
   );
 }
