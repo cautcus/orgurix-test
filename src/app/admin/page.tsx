@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { auth } from "@/app/auth/firebase"; // Adjust import path as necessary
+import { auth } from "@/app/auth/firebase";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { Topnav } from "@/components/navbar/topnav";
 import Footer from "@/components/footer/Footer";
@@ -12,7 +12,7 @@ import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import Script from "next/script";
 
 // List of admin user IDs
-const ADMIN_USER_IDS = ["IEtzL6BTfiMYtH5dOEr3son1Zrr2"];
+const ADMIN_USER_IDS = ["xplWxEbxi3bfa9ozsyGrEmiO4uF3"];
 
 const AdminPage = () => {
   const [user, setUser] = useState<User | null>(null);

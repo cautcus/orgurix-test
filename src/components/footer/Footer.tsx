@@ -19,15 +19,6 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-white">Products</h3>
-            <ul>
-              <li><a href="/shop" className="hover:text-white">Shop</a></li>
-              <li><a href="/features" className="hover:text-white">Features</a></li>
-              <li><a href="/pricing" className="hover:text-white">Pricing</a></li>
-              <li><a href="/faq" className="hover:text-white">FAQ</a></li>
-            </ul>
-          </div>
-          <div>
             <h3 className="text-xl font-semibold mb-4 text-white">Support</h3>
             <ul>
               <li><a href="/support/customer" className="hover:text-white">Customer Support</a></li>
@@ -35,6 +26,15 @@ const Footer = () => {
               <li><a href="/support/privacy" className="hover:text-white">Privacy Policy</a></li>
               <li><a href="/support/help" className="hover:text-white">Help Center</a></li>
             </ul>
+          </div>
+          <div>
+            {/* <h3 className="text-xl font-semibold mb-4 text-white">Products</h3>
+            <ul>
+              <li><a href="/shop" className="hover:text-white">Shop</a></li>
+              <li><a href="/features" className="hover:text-white">Features</a></li>
+              <li><a href="/pricing" className="hover:text-white">Pricing</a></li>
+              <li><a href="/faq" className="hover:text-white">FAQ</a></li>
+            </ul> */}
           </div>
           <div>
             <h3 className="text-xl font-semibold mb-4 text-white">Follow Us</h3>

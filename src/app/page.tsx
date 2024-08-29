@@ -55,7 +55,7 @@ export default function Home() {
     <Topnav />
     <Slider/>
     <AppleCardsCarouselDemo/>
-    <div className="mx-auto max-w-xl text-center pt-20">
+    <div className="mx-auto max-w-xl text-center pt-20" id="shop">
           <TextGenerateEffect words="Introducing Our Premier Line of Organic Essentials"/>
     </div>
     <CardA/>  

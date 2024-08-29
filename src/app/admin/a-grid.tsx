@@ -122,7 +122,7 @@ export function AGrid() {
         </a>
         <a
           className="md:col-span-1 text-orange-500"
-          onClick={() => setShowProduct(true)}
+          href="/admin/productdb"
         >
           <BentoGridItem
             title="Add Product"

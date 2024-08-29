@@ -1,7 +1,8 @@
 "use client"
 import { React, useState } from "react";
+import { IconBrandInstagram, IconBrandLinkedin } from "@tabler/icons-react";
 
-const TeamMember = ({ initials, name, title, image, linkin }) => {
+const TeamMember = ({ initials, name, title, image, linkin, insta }) => {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -26,23 +27,10 @@ const TeamMember = ({ initials, name, title, image, linkin }) => {
           <p className="text-gray-500">{title}</p>
           <div className="mt-4 flex justify-center gap-4 text-white ">
             <a href={linkin}>
-              <svg
-                className="w-5 h-5 duration-150 hover:text-gray-500"
-                fill="none"
-                viewBox="0 0 48 48"
-              >
-                <g clip-path="url(#clip0_17_68)">
-                  <path
-                    fill="currentColor"
-                    d="M44.447 0H3.544C1.584 0 0 1.547 0 3.46V44.53C0 46.444 1.584 48 3.544 48h40.903C46.407 48 48 46.444 48 44.54V3.46C48 1.546 46.406 0 44.447 0zM14.24 40.903H7.116V17.991h7.125v22.912zM10.678 14.87a4.127 4.127 0 01-4.134-4.125 4.127 4.127 0 014.134-4.125 4.125 4.125 0 010 8.25zm30.225 26.034h-7.115V29.766c0-2.653-.047-6.075-3.704-6.075-3.703 0-4.265 2.896-4.265 5.887v11.325h-7.107V17.991h6.826v3.13h.093c.947-1.8 3.272-3.702 6.731-3.702 7.21 0 8.541 4.744 8.541 10.912v12.572z"
-                  />
-                </g>
-                <defs>
-                  <clipPath id="clip0_17_68">
-                    <path fill="currentColor" d="M0 0h48v48H0z" />
-                  </clipPath>
-                </defs>
-              </svg>
+              <IconBrandLinkedin className="w-8 h-8 duration-150 hover:text-gray-500"/>
+            </a>
+            <a href={insta}>
+              <IconBrandInstagram className="w-8 h-8 duration-150 hover:text-gray-500"/>
             </a>
           </div>
         </div>
@@ -57,6 +45,7 @@ const teamMembers = [
     name: "Ayush Baral",
     title: "Founder & CTO",
     linkedin: "https://www.linkedin.com/in/cautcus/",
+    instagram: "https://www.instagram.com/cautcus/",
     image:"/img/ayush-dp.jpg",
   },
   {
@@ -64,6 +53,7 @@ const teamMembers = [
     name: "Shreyas Das",
     title: "Co-Founder & COO",
     linkedin: "https://www.linkedin.com/in/shreyas-das-00a273321/",
+    instagram: "https://www.instagram.com/avoid___dynamo/",
     image:'/img/shreyas-dp.jpg',
   },
   {
@@ -71,6 +61,7 @@ const teamMembers = [
     name: "Debarati Saha",
     title: "CMO",
     image:'/img/debarati-dp.jpg',
+    instagram: "https://www.instagram.com/imdebaratisa/",
   }
 ];
 
@@ -88,6 +79,7 @@ export default function Team() {
                 title={member.title}
                 image={member.image}
                 linkin={member.linkedin}
+                insta={member.instagram}
               />
             ))}
           </div>
