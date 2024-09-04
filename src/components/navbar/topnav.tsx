@@ -4,7 +4,7 @@ import { HoveredLink, Menu, MenuItem, ProductItem } from "./navbar-menu";
 import { cn } from "@/lib/utils";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { db, auth } from "@/app/auth/firebase";
-import { collection, getDocs, doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import Image from "next/image";
 import { IconUser, IconLogin, IconShoppingBag  } from '@tabler/icons-react';
@@ -36,7 +36,7 @@ function Navbar({ className }: { className?: string }) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const ADMIN_USER_IDS = ["IEtzL6BTfiMYtH5dOEr3son1Zrr2"];
+  const ADMIN_USER_IDS = ["xplWxEbxi3bfa9ozsyGrEmiO4uF3"];
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -45,7 +45,7 @@ function Navbar({ className }: { className?: string }) {
         const productsSnapshot = await getDocs(productsCollection);
         const productsList: Product[] = productsSnapshot.docs.map((doc) => ({
           id: doc.id,
-          ...(doc.data() as Omit<Product, 'id'>), // Assuming all fields in Product are present except 'id'
+          ...(doc.data() as Omit<Product, 'id'>),
         }));
 
         setProducts(productsList);
@@ -78,12 +78,19 @@ function Navbar({ className }: { className?: string }) {
     try {
       await signOut(auth);
       setUser(null);
-      window.location.href = "/"; // Redirect to home page
+      window.location.href = "/";
     } catch (error: any) {
       console.error("Error signing out: ", error);
       setAlertMessage(error.message);
       setShowAlert(true);
     }
+  };
+
+  const truncateText = (text: string, wordLimit: number) => {
+    const words = text.split(" ");
+    return words.length > wordLimit
+      ? words.slice(0, wordLimit).join(" ") + "..."
+      : text;
   };
 
   return (
@@ -100,7 +107,7 @@ function Navbar({ className }: { className?: string }) {
               <a href="/" className="text-white font-semibold"><Image width={60} height={60} src="/img/icon.png" alt={""}/></a>
             </div>
             <div className="flex items-center justify-center w-1/3 space-x-2">
-              <MenuItem setActive={setActive} active={active} item={"Product"} id={"product"}>
+              <MenuItem setActive={setActive} active={active} item={"Glass Bottle"} id={"product"}>
                 <div className="text-sm grid grid-cols-1 gap-10 p-4">
                 {products.map((product) => (
                 <ProductItem
@@ -108,7 +115,7 @@ function Navbar({ className }: { className?: string }) {
                 title={product.name}
                 href={product.goto}
                 src={product.image}
-                description={product.description}
+                description= {truncateText(product.description,10)}
               /> ))}
                 </div>
               </MenuItem>
@@ -121,7 +128,7 @@ function Navbar({ className }: { className?: string }) {
             <div className="text-sm grid grid-cols-1 gap-6 p-4">
             {isAdmin ? (<>
             <HoveredLink href="/admin">Admin</HoveredLink>
-          </>) :  
+          </>) : 
           <HoveredLink className="text-neutral-200 hover:text-neutral-400" href="/dashboard">{user.displayName || "Dashboard"}</HoveredLink>}
           <a className="text-yellow-400 hover:text-yellow-600" href="/company/careers">Become A Seller</a>
             <HoveredLink href="#" className="text-neutral-200 hover:text-neutral-400 pointer">

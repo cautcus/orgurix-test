@@ -111,7 +111,7 @@ export function CardA() {
                     src={product.image}
                     height="1000"
                     width="1000"
-                    className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
+                    className="h-full w-full object-cover rounded-xl group-hover/card:shadow-xl"
                     alt={product.name}
                   />
                 </CardItem>
